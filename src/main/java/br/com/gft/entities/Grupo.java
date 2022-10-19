@@ -1,21 +1,37 @@
 package br.com.gft.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Grupo {
+@Table(name = "grupos")
+public class Grupo implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty(message = "Nome não pode ser vazio")
+	@Column(name = "nome")
 	private String nome;
+	
+	@Column(name = "qtd_pessoas")
 	private int quantidadeDePessoas;
+	
+	@Column(name = "status")
+	private Boolean isAtivo;
+	
 	@OneToMany
 	private List<ParticipanteEvento> listaDeParticipantesDoGrupo;
 	
@@ -43,6 +59,12 @@ public class Grupo {
 	}
 	public void setListaDeParticipantesDoGrupo(List<ParticipanteEvento> listaDeParticipantesDoGrupo) {
 		this.listaDeParticipantesDoGrupo = listaDeParticipantesDoGrupo;
+	}
+	public Boolean getisAtivo() {
+		return isAtivo;
+	}
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
 	}
 	
 	
