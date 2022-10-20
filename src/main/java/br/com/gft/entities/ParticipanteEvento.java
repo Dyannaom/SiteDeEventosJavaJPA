@@ -21,6 +21,8 @@ public class ParticipanteEvento {
 	@OneToMany	
 	private List<Evento> listaDeEventosQueEstaParticipando;
 	
+	private Boolean isAtivo;
+	
 	
 	public Long getId() {
 		return id;
@@ -57,14 +59,20 @@ public class ParticipanteEvento {
 	}
 	public void setListaDeEventosQueEstaParticipando(List<Evento> listaDeEventosQueEstaParticipando) {
 		this.listaDeEventosQueEstaParticipando = listaDeEventosQueEstaParticipando;
+	}	
+	public Boolean getIsAtivo() {
+		return isAtivo;
+	}
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
 	}
 	
 	
-	public static List<ParticipanteEvento> cadastrarParticipante() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
+	
 
+	
+	
+	
 }
-	
-	

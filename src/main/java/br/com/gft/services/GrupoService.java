@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import br.com.gft.entities.Grupo;
 import br.com.gft.entities.ParticipanteEvento;
 import br.com.gft.repositories.GrupoRepository;
+import br.com.gft.repositories.ParticipanteEventoRepository;
+
+
 
 @Service
 public class GrupoService {
@@ -16,12 +19,15 @@ public class GrupoService {
 	@Autowired
 	private GrupoRepository grupoRepository;
 	
+	@Autowired
+	private ParticipanteEventoRepository participanteEventoRepository;
+	
 
 	public Grupo salvarGrupo(Grupo grupo) {
 		return grupoRepository.save(grupo);
 	}
 
-	public List<Grupo> listarGrupos(String nome, int quantidadeDePessoas) {
+	public List<Grupo> listarGrupos(String nome, Integer quantidadeDePessoas) {
 
 		if (nome != null || quantidadeDePessoas <=0)
 			return listarGruposPorNomeEQuantidadeDePessoas(nome, quantidadeDePessoas);
@@ -37,15 +43,16 @@ public class GrupoService {
 		return grupoRepository.findAll();
 	}
 
-//	public List<ParticipanteEvento> listarParticipantesdoGrupo(String nome, String quatroLetras) {
-//
-//		if (nome != null || quatroLetras != null)
-//		
-//			return grupoRepository.findByNomeContainsAndQuatroLetrasContains(nome, quatroLetras);
-//
-//		return ParticipanteEvento.cadastrarParticipante();
-//
-//	}
+	public List<ParticipanteEvento> listarParticipantesdoGrupo(String nome, String quatroLetras) throws Exception {
+
+		if (nome != null || quatroLetras != null)
+		
+			return participanteEventoRepository.findByQuatroLetrasContainsAndNomeContains(quatroLetras, nome);
+
+			throw new Exception("Participante não encontrado");
+			
+
+	}
 
 	public Grupo obterGrupo(Long id) throws Exception {
 

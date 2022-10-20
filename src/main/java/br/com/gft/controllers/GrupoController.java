@@ -2,8 +2,6 @@ package br.com.gft.controllers;
 
 import javax.validation.Valid;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.gft.entities.Grupo;
 import br.com.gft.services.GrupoService;
+import br.com.gft.services.ParticipanteEventoService;
 
 
 @Controller
@@ -24,73 +23,56 @@ public class GrupoController {
 	@Autowired
 	private GrupoService grupoService;
 	
-//	@Autowired
-//	private ParticipanteEventoService participanteEventoService;
+	@Autowired
+	private ParticipanteEventoService participanteEventoService;
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/editar")
 	public ModelAndView editarGrupo(@RequestParam(required = false) Long id) {
 		
 		ModelAndView mv = new ModelAndView("grupo/form.html");
 		
-		Grupo grupo;
-		
+				
 		if(id==null) {
-			grupo = new Grupo();
+			mv.addObject("grupo", new Grupo());
 		}else {
 			try {
-				grupo = grupoService.obterGrupo(id);
+				mv.addObject("grupo", grupoService.obterGrupo(id));
 			}catch(Exception e) {
-				grupo = new Grupo ();
+				mv.addObject("grupo", new Grupo());
 				mv.addObject("mensagem", e.getMessage());
 			}
 		}
 		
-		mv.addObject("grupo", grupo);
-//		mv.addObject("listaParticipantes", participanteEventoService.listarParticipantesDoEvento());
+		mv.addObject("listaParticipantes", participanteEventoService.listarParticipantesDoEvento());
 		
 		return mv;
 		
 }
 	
 	@RequestMapping(method = RequestMethod.POST, path = "editar")
-	public ModelAndView salvarGrupo(@Valid Grupo grupo, BindingResult bindingResult) {
+	public ModelAndView salvarGrupo(@Valid Grupo grupo, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		
-		ModelAndView mv = new ModelAndView("grupo/form.html");
+		ModelAndView mv;
 		
-		boolean novo = true;
-		
-		if(grupo.getId() != null) {
-			novo = false;
-		}
-		
-		if(bindingResult.hasErrors()) {
+		if(!bindingResult.hasErrors()) {
+			mv = new ModelAndView("redirect:/grupo");
+			grupoService.salvarGrupo(grupo);		
 			mv.addObject("grupo", grupo);
-			return mv;
-		}
-		
-		grupoService.salvarGrupo(grupo);
-		
-		if(novo) {
-			mv.addObject("grupo", new Grupo());
 		} else {
-			mv.addObject("grupo", grupo);
+			mv = new ModelAndView("grupo/form.html");
 		}
-		
-		mv.addObject("mensagem", "Grupo salvo com sucesso");
-//		mv.addObject("listaParticipantes", participanteEventoService.listarParticipantesDoEvento());
-		
+			
 		return mv;
 	}
 	
 	
 	@RequestMapping
-	public ModelAndView listarGrupos(String nome, int quantidadeDePessoas) {
+	public ModelAndView listarGrupos() {
 		
-		ModelAndView mv = new ModelAndView("grupo/listar.html");
+		ModelAndView mv = new ModelAndView("grupo/list.html");
 		
-		mv.addObject("listaGrupo", grupoService.listarGrupos(nome, quantidadeDePessoas));
-		mv.addObject("nome", nome);
-		mv.addObject("quantidadeDePessoas", quantidadeDePessoas);
+		mv.addObject("listaGrupo", grupoService.listarTodosGrupos());
+		mv.addObject("listaParticipantes", participanteEventoService.listarParticipantesDoEvento());
 		
 		return mv;
 	}

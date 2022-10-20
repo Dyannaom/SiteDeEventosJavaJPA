@@ -1,6 +1,5 @@
 package br.com.gft.entities;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,27 +8,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "grupos")
-public class Grupo implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
+public class Grupo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotEmpty(message = "Nome não pode ser vazio")
-	@Column(name = "nome")
+	@Column(unique=true)
 	private String nome;
 	
-	@Column(name = "qtd_pessoas")
-	private int quantidadeDePessoas;
+	private Integer quantidadeDePessoas;
 	
-	@Column(name = "status")
 	private Boolean isAtivo;
 	
 	@OneToMany
@@ -48,10 +41,10 @@ public class Grupo implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public int getQuantidadeDePessoas() {
+	public Integer getQuantidadeDePessoas() {
 		return quantidadeDePessoas;
 	}
-	public void setQuantidadeDePessoas(int quantidadeDePessoas) {
+	public void setQuantidadeDePessoas(Integer quantidadeDePessoas) {
 		this.quantidadeDePessoas = quantidadeDePessoas;
 	}
 	public List<ParticipanteEvento> getListaDeParticipantesDoGrupo() {
