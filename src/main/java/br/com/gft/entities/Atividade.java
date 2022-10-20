@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Atividade {
@@ -13,10 +16,14 @@ public class Atividade {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	private LocalDateTime dataInicio;
-	private LocalDateTime dataFinal;
 	
+	@NotEmpty (message = " Não pode ser em branco ")
+	private String nome;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDateTime dataInicio;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDateTime dataFinal;
 	
 	
 	public Long getId() {
