@@ -1,9 +1,13 @@
 package br.com.gft.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Usuario {
@@ -11,8 +15,15 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty(message = "Nome não pode ser vazio")
 	private String nome;
+	@Email(message = "@gft.com" )
+	@NotEmpty(message = "Nome não pode ser vazio")
+	@Column(unique=true)
 	private String email;
+	@NotEmpty(message = "É necessario inserir as suas 4 letras")
+	@Size(min=4, max = 4, message = "Devem ser 4 letras")
+	@Column(unique=true)
 	private String quatroLetras;
 	private String senha;	
 	
