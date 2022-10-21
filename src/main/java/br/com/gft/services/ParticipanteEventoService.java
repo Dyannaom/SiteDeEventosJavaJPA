@@ -57,15 +57,21 @@ public class ParticipanteEventoService {
 	public void desativarParticipante(Long id) throws Exception {
 		
 		Optional<ParticipanteEvento> participante = participanteEventoRepository.findById(id);
+		ParticipanteEvento participanteAux;
 		
 		if(participante.isEmpty()) {
 			throw new Exception("Participante não Cadastrado");
-		}
+		}	
+		participanteAux  =  participante.get();
 		
-		participante.get().setIsAtivo(false);
-				
+		if(participanteAux.getIsAtivo() == false) {
+			participanteAux.setIsAtivo(true);	
+			participanteEventoRepository.save(participanteAux);
+		}else {
+		participanteAux.setIsAtivo(false);	
+		participanteEventoRepository.save(participanteAux);
 			}		
-		
+	}
 	
 	}
 	

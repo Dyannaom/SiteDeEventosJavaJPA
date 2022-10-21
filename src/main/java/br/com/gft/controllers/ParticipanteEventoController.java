@@ -1,7 +1,10 @@
 package br.com.gft.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,40 +26,48 @@ import br.com.gft.services.ParticipanteEventoService;
 		ParticipanteEventoService participanteService;
 		
 		
+			
+			
+			@RequestMapping(method = RequestMethod.POST, path = "editar")
+			public ModelAndView salvarParticipante(@Valid ParticipanteEvento participanteEvento, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+				
+				ModelAndView mv;
+				
+				if(!bindingResult.hasErrors()) {
+					mv = new ModelAndView("redirect:/participante");
+					participanteService.salvarParticipante(participanteEvento);	
+					mv.addObject("participanteEvento", participanteEvento);
+					redirectAttributes.addFlashAttribute("mensagem", "Participante Cadastrado com Sucesso!");
+				} else {
+					mv = new ModelAndView("participante/form.html");
+					
+					
+				}
+					
+				return mv;
+			}
+		
 		
 		@RequestMapping(method = RequestMethod.GET, path = "editar")
-		public ModelAndView cadastrarParticipante() {
+		public ModelAndView editarParticipante(@RequestParam(required = false) Long id){
+			
+			ModelAndView mv = new ModelAndView("participante/form.html");
+						
 			
 			
-			ModelAndView mv = new ModelAndView("form.html");
-			
-			mv.addObject("participanteEvento", new ParticipanteEvento());	
-			mv.addObject("mensagem","Participante Cadastrado com Sucessso!");
-			
-			return mv;	
-			
-		}
-		
-		
-		@RequestMapping(path = "editar")
-		public ModelAndView editarParticipante(@RequestParam(required = false) Long id) throws Exception {
-			
-			ModelAndView mv = new ModelAndView("form.html");		
-				
-			ParticipanteEvento participante;
-			
-					if(id==null) {
-			participante = new ParticipanteEvento();
-		}else {
-			try {
-				participante = participanteService.obterParticipante(id);
-			}catch(Exception e) {
-				participante = new ParticipanteEvento();
-				mv.addObject("mensagem", e.getMessage());
+			if(id==null) {
+				mv.addObject("participanteEvento", new ParticipanteEvento());
+			}else {
+				try {
+					mv.addObject("participanteEvento", participanteService.obterParticipante(id));
+					
+				}catch(Exception e) {
+					
+					mv.addObject("mensagem", e.getMessage());
 			}
-		}
 		
-		mv.addObject("participante", participante);
+		}
+				
 		
 		
 		return mv;
@@ -64,25 +75,24 @@ import br.com.gft.services.ParticipanteEventoService;
 		}
 
 		
-		@RequestMapping("/desativar")
+		@RequestMapping("desativar")
 		public ModelAndView desativarParticipante(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 			
-			ModelAndView mv = new ModelAndView("redirect:/index.html");
+			ModelAndView mv = new ModelAndView("redirect:/participante");
 			
 			try {
 				participanteService.desativarParticipante(id);
 				redirectAttributes.addFlashAttribute("mensagem", "Participante desativado com Sucesso");
 			}catch(Exception e){
 				redirectAttributes.addFlashAttribute("mensagem", "Erro ao desativar Participante" + e.getMessage());
-			}
-				
+			}				
 			
 			return mv;
 		}
-		@RequestMapping(path = "lista")
+		@RequestMapping
 		public ModelAndView listarParticipantesPorNomeOuPorQuatroLetras(String quatroLetras, String nome) {
 		
-			ModelAndView mv = new ModelAndView("lista.html");
+			ModelAndView mv = new ModelAndView("participante/list.html");
 			
 			
 			mv.addObject("lista", participanteService.listarParticipantesPorQuatroLetrasOuNome(quatroLetras, nome));
