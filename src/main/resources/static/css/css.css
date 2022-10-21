@@ -1,0 +1,84 @@
+body {
+	background-color: #00326B;
+}
+
+.usuario-card {
+	box-shadow: 5px 5px 10px #00326B;
+	width: 100%;
+}
+
+.usuario{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	min-width: 350px;
+	max-width: 500px;
+	
+}
+
+.card-header-usuario {
+	background-color: white;
+	border-bottom: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.card-title-usuario{
+	color: #00326B;
+	display: inline;
+	align-self: flex-end;
+	padding-top: 25px;
+	
+	
+}
+
+#logo-gft{
+	width: 140px;
+}
+
+.card-text-entrar-cadastrar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding-top: 30px;
+	padding-bottom: 20px;
+}
+
+.card-header-icons {
+	background-color: #00326B;
+	opacity: 0.3;
+	border-bottom: 0px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	justify-items: center;
+	align-items: center;
+}
+.card-header-title-usuario{
+	color: white;
+	
+}
+
+.form-usuario {
+	color: #00326B;
+	display: flex;
+	flex-direction: column;
+	padding: 10px 40px;
+}
+
+.btn-usuario-entrar-cadastrar {
+	background-color: #00326B;
+	color: white;
+	font-weight: 500;
+	box-align: right;
+	align-self: center;
+	width: 100%;
+	border-radius: 2px;
+}
+
+.color-red {
+	color: red;
+}
