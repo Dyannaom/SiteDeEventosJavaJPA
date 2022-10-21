@@ -10,7 +10,7 @@ import br.com.gft.entities.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	
-	Optional<Usuario> findByEmail(String email);
 	Optional<Usuario> findByQuatroLetras(String quatroLetras);
+	Optional<Usuario> findByEmail(String email);
 
 }

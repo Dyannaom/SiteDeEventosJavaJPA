@@ -25,7 +25,8 @@ public class Usuario {
 	@Size(min=4, max = 4, message = "Devem ser 4 letras")
 	@Column(unique=true)
 	private String quatroLetras;
-	private String senha;	
+	private String senha;
+	private boolean status;
 	
 	
 	public Long getId() {
@@ -58,6 +59,13 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	public boolean getStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
 	
 	
 
