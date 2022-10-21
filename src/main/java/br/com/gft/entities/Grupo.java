@@ -2,11 +2,13 @@ package br.com.gft.entities;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Grupo {
@@ -14,8 +16,15 @@ public class Grupo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotEmpty(message = "Nome não pode ser vazio")
+	@Column(unique=true)
 	private String nome;
-	private int quantidadeDePessoas;
+	
+	private Integer quantidadeDePessoas;
+	
+	private Boolean isAtivo;
+	
 	@OneToMany
 	private List<ParticipanteEvento> listaDeParticipantesDoGrupo;
 	
@@ -32,10 +41,10 @@ public class Grupo {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public int getQuantidadeDePessoas() {
+	public Integer getQuantidadeDePessoas() {
 		return quantidadeDePessoas;
 	}
-	public void setQuantidadeDePessoas(int quantidadeDePessoas) {
+	public void setQuantidadeDePessoas(Integer quantidadeDePessoas) {
 		this.quantidadeDePessoas = quantidadeDePessoas;
 	}
 	public List<ParticipanteEvento> getListaDeParticipantesDoGrupo() {
@@ -43,6 +52,12 @@ public class Grupo {
 	}
 	public void setListaDeParticipantesDoGrupo(List<ParticipanteEvento> listaDeParticipantesDoGrupo) {
 		this.listaDeParticipantesDoGrupo = listaDeParticipantesDoGrupo;
+	}
+	public Boolean getisAtivo() {
+		return isAtivo;
+	}
+	public void setIsAtivo(Boolean isAtivo) {
+		this.isAtivo = isAtivo;
 	}
 	
 	
