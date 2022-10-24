@@ -2,6 +2,7 @@ package br.com.gft.entities;
 
 import java.util.List;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,16 +19,13 @@ public class Grupo {
 	private Long id;
 	
 	@NotEmpty(message = "Nome não pode ser vazio")
-	@Column(unique=true)
+	@Column(unique = true)
 	private String nome;
 	
 	private Integer quantidadeDePessoas;
 	
-	private Boolean isAtivo;
-	
-	@OneToMany
+	@OneToMany(mappedBy = "grupo")
 	private List<ParticipanteEvento> listaDeParticipantesDoGrupo;
-	
 	
 	public Long getId() {
 		return id;
@@ -44,8 +42,8 @@ public class Grupo {
 	public Integer getQuantidadeDePessoas() {
 		return quantidadeDePessoas;
 	}
-	public void setQuantidadeDePessoas(Integer quantidadeDePessoas) {
-		this.quantidadeDePessoas = quantidadeDePessoas;
+	public void setQuantidadeDePessoas(Integer quantidadeParticipantes) {
+		this.quantidadeDePessoas = quantidadeParticipantes;
 	}
 	public List<ParticipanteEvento> getListaDeParticipantesDoGrupo() {
 		return listaDeParticipantesDoGrupo;
@@ -53,13 +51,4 @@ public class Grupo {
 	public void setListaDeParticipantesDoGrupo(List<ParticipanteEvento> listaDeParticipantesDoGrupo) {
 		this.listaDeParticipantesDoGrupo = listaDeParticipantesDoGrupo;
 	}
-	public Boolean getisAtivo() {
-		return isAtivo;
-	}
-	public void setIsAtivo(Boolean isAtivo) {
-		this.isAtivo = isAtivo;
-	}
-	
-	
-
 }
