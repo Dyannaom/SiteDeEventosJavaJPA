@@ -1,6 +1,6 @@
 package br.com.gft.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,9 +21,9 @@ public class Atividade {
 	private String nome;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataInicio;
+	private LocalDateTime dataInicio;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dataFinal;
+	private LocalDateTime dataFinal;
 	
 	
 	public Long getId() {
@@ -41,13 +41,13 @@ public class Atividade {
 	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
-	public void setDataInicio(LocalDate dataInicio) {
+	public void setDataInicio(LocalDateTime dataInicio) {
 		this.dataInicio = dataInicio;
 	}
 	public LocalDate getDataFinal() {
 		return dataFinal;
 	}
-	public void setDataFinal(LocalDate dataFinal) {
+	public void setDataFinal(LocalDateTime dataFinal) {
 		this.dataFinal = dataFinal;
 	}
 }
