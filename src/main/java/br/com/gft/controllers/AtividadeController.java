@@ -86,4 +86,27 @@ public class AtividadeController {
 		return mv;
 		
 	}
+	
+	@RequestMapping(method = RequestMethod.POST, path = "editar")
+    public ModelAndView salvarAtividade(@Valid Atividade atividade, BindingResult bindingResult) {
+        
+        ModelAndView mv = new ModelAndView("atividade/form.html");
+                    
+        if(bindingResult.hasErrors()) {
+            mv.addObject("atividade", atividade);
+            return mv;
+        }
+        
+        atividadeServices.saveAtividade(atividade);  
+        
+        if(atividade.getId() != null) {
+        	mv.addObject("atividade", new Atividade());
+        } else {        	
+        	mv.addObject("atividade", atividade);      
+        }
+        
+        mv.addObject("mensagem", "Evento salvo com sucesso");    
+        
+        return mv;
+    }
 }
