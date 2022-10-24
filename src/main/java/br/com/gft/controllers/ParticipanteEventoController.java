@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.gft.entities.ParticipanteEvento;
+import br.com.gft.services.GrupoService;
 import br.com.gft.services.ParticipanteEventoService;
 
 
@@ -25,6 +26,8 @@ import br.com.gft.services.ParticipanteEventoService;
 		@Autowired
 		ParticipanteEventoService participanteService;
 		
+		@Autowired
+		GrupoService grupoService;
 		
 			
 			
@@ -36,11 +39,11 @@ import br.com.gft.services.ParticipanteEventoService;
 				if(!bindingResult.hasErrors()) {
 					mv = new ModelAndView("redirect:/participante");
 					participanteService.salvarParticipante(participanteEvento);	
+					grupoService.SomarQuantidadeParticipantesNoGrupo(participanteEvento.getGrupo());
 					mv.addObject("participanteEvento", participanteEvento);
 					redirectAttributes.addFlashAttribute("mensagem", "Participante Cadastrado com Sucesso!");
 				} else {
 					mv = new ModelAndView("participante/form.html");
-					
 					
 				}
 					
@@ -68,7 +71,7 @@ import br.com.gft.services.ParticipanteEventoService;
 		
 		}
 				
-		
+		mv.addObject("listaGrupo", grupoService.listarTodosGrupos());
 		
 		return mv;
 			

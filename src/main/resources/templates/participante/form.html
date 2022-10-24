@@ -31,12 +31,19 @@
 		<input type="text" class="form-control" th:field="*{quatroLetras}" required pattern="[A-Za-z]{4}" placeholder="Digite suas quatro letras">
 	</div>
 	<div class="form-group mb-3">
+					<label for="nome">Grupo:</label> 
+					<select class="form-select" th:field="*{grupo}">
+					<option th:each="grupo: ${listaGrupo}" th:value="${grupo.id}" th:text="${grupo.nome}" />
+					</select>
+	</div>
+	<div class="form-group mb-3">
         <label for="isAtivo">Status:</label>
         <select class="form-select" th:field="*{isAtivo}">
         <option th:value="1">Ativo</option>
         <option th:value="0">Inativo</option>
         </select>
 	</div>
+	
 		
 		<button type="submit">Salvar Participante</button>
 	</form>

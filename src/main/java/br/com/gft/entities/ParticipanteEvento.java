@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -30,8 +31,11 @@ public class ParticipanteEvento {
 	private String quatroLetras;
 	@OneToMany	
 	private List<Evento> listaDeEventosQueEstaParticipando;
-	private Boolean isAtivo;
 	
+	@ManyToOne
+	private Grupo grupo;
+	
+	private Boolean isAtivo;
 	
 	public Long getId() {
 		return id;
@@ -76,12 +80,11 @@ public class ParticipanteEvento {
 		this.isAtivo = isAtivo;
 	}
 	
-	
-	
-	
-	
-
-	
-	
-	
+	public Grupo getGrupo() {
+		return grupo;
+	}
+	public void setGrupo(Grupo grupo) {
+		this.grupo = grupo;
+	}
+		
 }

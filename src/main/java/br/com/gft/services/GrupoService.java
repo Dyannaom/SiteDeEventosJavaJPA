@@ -11,8 +11,6 @@ import br.com.gft.entities.ParticipanteEvento;
 import br.com.gft.repositories.GrupoRepository;
 import br.com.gft.repositories.ParticipanteEventoRepository;
 
-
-
 @Service
 public class GrupoService {
 
@@ -21,7 +19,6 @@ public class GrupoService {
 	
 	@Autowired
 	private ParticipanteEventoRepository participanteEventoRepository;
-	
 
 	public Grupo salvarGrupo(Grupo grupo) {
 		return grupoRepository.save(grupo);
@@ -53,26 +50,32 @@ public class GrupoService {
 			
 
 	}
+	
+	public void SomarQuantidadeParticipantesNoGrupo(Grupo grupo) {
+		int quantidadeParticipantes = participanteEventoRepository.findByGrupo(grupo).size();
+		
+		try{
+//			Grupo grupo = obterGrupo(id);
+			grupo.setQuantidadeDePessoas(quantidadeParticipantes);
+			grupoRepository.save(grupo);
+		}catch(Exception e) {
+			
+		}
+	}
 
 	public Grupo obterGrupo(Long id) throws Exception {
-
 		Optional<Grupo> grupo = grupoRepository.findById(id);
-
 		if (grupo.isEmpty()) {
 			throw new Exception("Grupo não encontrado");
 		}
-
 		return grupo.get();
 	}
-
-	public void desativarGrupo(Long id) throws Exception {
+	
+	public void excluirGrupo(Long id) throws Exception {
 		Optional<Grupo> grupo = grupoRepository.findById(id);
-
-		if (grupo.isEmpty()) {
+		if(grupo.isEmpty())
 			throw new Exception("Grupo não encontrado");
-		}
-
-		grupo.get().setIsAtivo(false);;
+		else
+			grupoRepository.delete(grupo.get());
 	}
-
 }
