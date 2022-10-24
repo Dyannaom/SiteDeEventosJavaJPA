@@ -1,5 +1,7 @@
 package br.com.gft.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 
@@ -95,15 +97,20 @@ public class EventoController {
 	public ModelAndView listarEvento() {
 		
 		ModelAndView mv = new ModelAndView("evento/listar.html");
+		List<Evento> lista = eventoService.listarEvento();
+		mv.addObject("lista", lista);
+		if(lista.isEmpty()) {
+			mv.addObject("mensagem", "Nenhum evento cadastrado!");
+			mv.addObject("cor", "warning");
+		}
 		
-		mv.addObject("lista", eventoService.listarEvento());
-		
+			
 		return mv;		
 	}
 	
 	
 	
-	@RequestMapping("/excluir")
+	@RequestMapping("/deletar")
 	public ModelAndView excluirEvento(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		
 		ModelAndView mv = new ModelAndView("redirect:/evento");
