@@ -39,7 +39,8 @@
 		<h3>Cadastro de Atividade</h3>
 	</div>
 	<div class="container">
-		<form method="post" th:object="${atividade}" th:action="@{/atividade/editar}" autocomplete="off">
+		<form method="post" th:object="${atividade}" th:action="@{/atividade/salvar}" autocomplete="off">
+		<input type="hidden" th:field="*{id}"></input>
 			<div class="mb-3 col-md-6">
 				<label for="inputNome" class="form-label">Nome</label>
 				<input type="text" th:field="*{nome}" class="form-control" id="inputNome" maxlength="100" required>

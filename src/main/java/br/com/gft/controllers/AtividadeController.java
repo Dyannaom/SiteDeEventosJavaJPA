@@ -1,5 +1,7 @@
 package br.com.gft.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 
@@ -22,7 +24,7 @@ public class AtividadeController {
 	@Autowired
 	AtividadeServices atividadeServices;
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/")
+	@RequestMapping(method = RequestMethod.GET, path = "editar")
 	public ModelAndView editarAtividade(@RequestParam(required = false) Long id) {
 		
 		ModelAndView mv = new ModelAndView("atividade/form.html");
@@ -44,7 +46,7 @@ public class AtividadeController {
 		ModelAndView mv;
 				
 		if(!bindingResult.hasErrors()) {
-			mv = new ModelAndView("redirect:/atividade/get");
+			mv = new ModelAndView("redirect:/atividade/listar");
 			atividadeServices.saveAtividade(atividade);
 			ra.addFlashAttribute("mensagem", "Atividade criado com sucesso!");
 		}else {
@@ -57,7 +59,7 @@ public class AtividadeController {
 	@RequestMapping(method = RequestMethod.GET, path = "deletar")
 	public ModelAndView deletarAtividade(@RequestParam Long id, RedirectAttributes ra) {
 		
-		ModelAndView mv = new ModelAndView("redirect:/atividade/get");
+		ModelAndView mv = new ModelAndView("redirect:/atividade/listar");
 		
 		try {
 			atividadeServices.deleteAtividade(id);
@@ -87,26 +89,41 @@ public class AtividadeController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, path = "editar")
-    public ModelAndView salvarAtividade(@Valid Atividade atividade, BindingResult bindingResult) {
-        
-        ModelAndView mv = new ModelAndView("atividade/form.html");
-                    
-        if(bindingResult.hasErrors()) {
-            mv.addObject("atividade", atividade);
-            return mv;
-        }
-        
-        atividadeServices.saveAtividade(atividade);  
-        
-        if(atividade.getId() != null) {
-        	mv.addObject("atividade", new Atividade());
-        } else {        	
-        	mv.addObject("atividade", atividade);      
-        }
-        
-        mv.addObject("mensagem", "Evento salvo com sucesso");    
-        
-        return mv;
-    }
+//	@RequestMapping(method = RequestMethod.POST, path = "editar")
+//    public ModelAndView salvarAtividade(@Valid Atividade atividade, BindingResult bindingResult) {
+//        
+//        ModelAndView mv = new ModelAndView("atividade/form.html");
+//                    
+//        if(bindingResult.hasErrors()) {
+//            mv.addObject("atividade", atividade);
+//            return mv;
+//        }
+//        
+//        atividadeServices.saveAtividade(atividade);  
+//        
+//        if(atividade.getId() != null) {
+//        	mv.addObject("atividade", new Atividade());
+//        } else {        	
+//        	mv.addObject("atividade", atividade);      
+//        }
+//        
+//        mv.addObject("mensagem", "Evento salvo com sucesso");    
+//        
+//        return mv;
+//    }
+	
+	@RequestMapping( method = RequestMethod.GET, path = "listar")
+	public ModelAndView listarAtividade() {
+		
+		ModelAndView mv = new ModelAndView("atividade/list.html");
+		
+		List<Atividade> listAtividade = atividadeServices.listAtividade();
+		mv.addObject("lista", listAtividade);
+		if(listAtividade.isEmpty()) {
+			mv.addObject("mensagem", "Nenhuma atividade cadastrada!");            
+			mv.addObject("cor", "warning");
+		}
+		
+		return mv;
+	}
 }

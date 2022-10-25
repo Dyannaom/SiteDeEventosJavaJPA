@@ -2,26 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-		<title>Grupos</title>
+		<title>Atividades</title>
 </head>
 <body>
 	<div th:if="${message !=null}">
 		<h1 th:text="${message}"></h1>
 	</div>
-	<div th:if="${listaGrupo!=null}">
+	<div th:if="${lista!=null}">
 		<table>
 			<thread>
 				<tr>
 					<th>Id</th>
-					<th>Nome do Grupo</th>
-					<th>Quantidade de Participantes</th>
+					<th>Atividades</th>
+					<th>Data Inicio</th>
+					<th>Data Final</th>
 				</tr>
 			</thread>
 				<tbody>
-					<tr th:each="grupo : ${listaGrupo}">
-						<td th:text="${grupo.id}"></td>
-						<td th:text="${grupo.nome}"></td>
-						<td th:text="${grupo.quantidadeDePessoas}"></td>
+					<tr th:each="atividade : ${lista}">
+						<td th:text="${atividade.id}"></td>
+						<td th:text="${atividade.nome}"></td>
+						<td th:text="${atividade.dataInicio}"></td>
+						<td th:text="${atividade.dataFinal}"></td>
+						<td><a class="btn btn-primary btn-sm" th:href="@{/atividade/editar(id=${atividade.id})}">Editar</a>
+                    <a class="btn btn-primary btn-sm" th:href="@{/atividade/deletar(id=${atividade.id})}" onclick=" confirm('Você realmente deseja deletar essa atividade?')">Deletar</a>
+                    </td>
 					</tr>
 				</tbody>
 		</table>
