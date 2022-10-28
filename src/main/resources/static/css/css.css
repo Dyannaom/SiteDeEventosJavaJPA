@@ -235,3 +235,12 @@
 .g6-width-30-porcento{
 	width: 30%;
 }
+.g6-flex-box-row{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	
+}
+.g6-btn-ranking {
+	width: 48%;
+}

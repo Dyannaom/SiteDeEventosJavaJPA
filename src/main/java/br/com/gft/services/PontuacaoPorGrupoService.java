@@ -102,5 +102,9 @@ public class PontuacaoPorGrupoService {
 		else
 			return pontuacao.get();
 	}
+	
+	public PontuacaoPorGrupo salvarPontuacaoPorGrupo(PontuacaoPorGrupo pontuacaoPorGrupo) {
+		return this.pontuacaoPorGrupoRepository.save(pontuacaoPorGrupo);
+	}
 
 }

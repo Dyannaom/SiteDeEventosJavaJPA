@@ -1,11 +1,14 @@
 package br.com.gft.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.gft.entities.DiaDeEvento;
 import br.com.gft.entities.ParticipanteEvento;
+import br.com.gft.entities.PontuacaoPorGrupo;
 import br.com.gft.entities.StatusPresenca;
 import br.com.gft.repositories.ParticipanteEventoRepository;
 import br.com.gft.repositories.StatusPresencaRepository;
@@ -37,6 +40,23 @@ public class StatusPresencaService {
 
 		}
 
+	}
+
+	public StatusPresenca obterStatusPresenca(Long id) throws Exception{
+		Optional<StatusPresenca> statusPresenca = statusPresencaRepository.findById(id);
+		if(statusPresenca.isEmpty())
+			throw new Exception("Status Presença não encontrado");
+		else
+			return statusPresenca.get();
+
+	}
+	
+	public List<StatusPresenca> listarStatusPresencaPorPontuacaoPorGrupoEPorDiaDeEvento(PontuacaoPorGrupo pontuacaoPorGrupo, DiaDeEvento diaDeEvento){
+		return statusPresencaRepository.findByPontuacaoPorGrupoAndDiaDeEvento(pontuacaoPorGrupo, diaDeEvento);
+	}
+	
+	public StatusPresenca salvarStatusPresenca(StatusPresenca statusPresenca) {
+		return statusPresencaRepository.save(statusPresenca);
 	}
 
 }

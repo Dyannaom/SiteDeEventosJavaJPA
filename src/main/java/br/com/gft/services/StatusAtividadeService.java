@@ -46,6 +46,14 @@ public class StatusAtividadeService {
 
 		}
 	}
+	
+	public StatusAtividade obterStatusAtividade(Long id) throws Exception{
+		Optional<StatusAtividade> statusAtividade = statusAtividadeRepository.findById(id);
+		if(statusAtividade.isEmpty())
+			throw new Exception("Status Presença não encontrado");
+		else
+			return statusAtividade.get();
+	}
 
 }
 

@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 
 @Entity
 public class PontuacaoPorGrupo {
@@ -82,6 +85,14 @@ public class PontuacaoPorGrupo {
 	public void setListaStatusPresenca(List<StatusPresenca> listaStatusPresenca) {
 		this.listaStatusPresenca = listaStatusPresenca;
 	}
+
+	@Override
+	public String toString() {
+		return "PontuacaoPorGrupo [id=" + id + ", grupo=" + grupo + ", ranking=" + ranking + ", listaStatusPresenca="
+				+ listaStatusPresenca + ", pontuacaoBonusAtividade=" + pontuacaoBonusAtividade
+				+ ", pontuacaoBonusPresenca=" + pontuacaoBonusPresenca + ", pontuacaoFinal=" + pontuacaoFinal + "]";
+	}
+	
 	
 	
 
