@@ -12,12 +12,15 @@
 			<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'" th:if="${mensagem != null}"
 				th:text="${mensagem}">
 			</div>
+			<div class="alert alert-danger d-flex justify-content-center" th:if="${#lists.isEmpty(pontuacaoPorGrupo.listaStatusPresenca)}">
+				Nenhum participante cadastrado no grupo
+			</div>
 
-			<div class="card g6-card-ranking">
+			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(pontuacaoPorGrupo.listaStatusPresenca)}">
 				<div class="card-body">
 					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação do <span th:text="${pontuacaoPorGrupo.grupo.nome}"></span></h4>
 				</div>
-				<div class="card-body" th:if="${not #lists.isEmpty(pontuacaoPorGrupo.listaStatusPresenca)}">
+				<div class="card-body">
 					<table class="table table-striped">
 						<thead>
 							<tr>
