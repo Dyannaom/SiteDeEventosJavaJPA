@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
+
+<head>
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<div layout:fragment="content">
+
+		<div class="container g6-card-forms-container-b">
+			<div id="etapas">
+				<span class="e3"></span>
+				<span class="e2"></span>
+				<span class="e1"></span>
+			</div>
+			<div class="card g6-main-card g6-main-card-cadastro-evento mb-3">
+				<div class="card-header g6-card-header-title-b1">
+					<div><img id="" th:src="@{/images/icons/calendario.ico}" /></div>
+					<h5 class="card-title">Cadastrar Evento</h5>
+				</div>
+				<div class="card-header g6-card-header-title-b2 mb-3">
+					<h5 class="card-title g6-title-card-header-b2">Etapa 2 - Adicionando Atividades</h5>
+				</div>
+				<div class="card-body mb-3">
+					<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'"
+						th:if="${mensagem != null}" th:text="${mensagem}">
+					</div>
+
+					<div class="g6-form-card">
+						<div class="adicionar-overflow-auto mb-3" th:if="${not #lists.isEmpty(lista)}">
+							<table id="lista-dias-de-evento" class="table table-striped table-card-forms">
+								<thead>
+									<tr>
+										<th scope="col">Data</th>
+										<th scope="col">Atividades</th>
+										<th scope="col">Opções</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="dia: ${lista}">
+										<td th:text="${#temporals.format(dia.data, 'dd/MM/yyyy')}"></td>
+										<td th:text="${#lists.size(dia.atividadesDoDia)}"></td>
+										<td>
+											<a class="btn g6-btn-card-forms btn-sm" th:href="@{'/evento/etapaDoisB?idDia='+${dia.id}+'&'+'idEvento='+${evento.id}}"
+												style="padding: 5px 30px;">Adicionar Atividades</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<a type="submit" class="btn g6-btn-card-forms mb-3" th:href="@{/evento/etapaTresA?(id=${evento.id})}">Próximo</a>
+					</div>
+
+
+					<div class="card-header g6-card-header-title-b2 mb-3">
+						<div><img id="logo-gft-card-form" th:src="@{/images/icons/logoGFT_1.png}" /></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+
+</html>

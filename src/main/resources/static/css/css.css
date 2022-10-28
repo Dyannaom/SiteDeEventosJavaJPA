@@ -1,54 +1,133 @@
-body {
-	background-color: #00326B;
+:root {
+	--corA: #213E7F;
+	--corA1: #0E1A36;
+	--corA2: #0e1a366b;
+	--corB: #288BE4;
+	--corC: #A9DDFA;
+	--corD: #001E44;
+	--corE: #606B94;
+	--corE1: #606b948f;
+	--branco: #FFFFFF;
+	--verde: #1FC43E;
+	--vermelho: red;
 }
 
-.usuario-card {
-	box-shadow: 5px 5px 10px #00326B;
-	width: 100%;
+/*Index*/
+.backround-color-B {
+	background-color: var(--corB);
 }
-
-.usuario{
+.flex-box-1 {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
-	min-width: 350px;
-	max-width: 500px;
-	
 }
-
-.card-header-usuario {
-	background-color: white;
-	border-bottom: 0px;
+#bloco-1-index, #bloco-2-index{
+	width: 40%;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
-
-.card-title-usuario{
-	color: #00326B;
-	display: inline;
-	align-self: flex-end;
-	padding-top: 25px;
-	
-	
+#bloco-2-index{
+	color: var(--branco);
+}
+#bloco-2-index a{
+	color: var(--corA);
+	padding: 10px 20px;
+	width: 300px;
+	font-weight: 500;
+	font-size: 17px;
+	margin-top: 30px;
 }
 
-#logo-gft{
-	width: 140px;
+#img-index-1 {
+	width: 25%;
+}
+#img-index-2 {
+	width: 60%;
+}
+/*Layout - Menu - Geral*/
+#menu {
+	position: fixed;
+	top:0;
+	width: 100%;
+	z-index: 10;
+}
+#espaco-menu {
+	width: 100%;
+	height: 69px;
+}
+.nav-color-bg{
+	background-color: var(--corA);
+	box-shadow: 5px 5px 10px var(--corA2);
+}
+.color-white, #navbarNavDropdown a{
+	color: var(--branco);
+}
+#gft-navbar {
+	font-size: 25px;
+	font-weight: 500;
+}
+#gft-navbar:hover {
+	color: var(--corE);
 }
 
-.card-text-entrar-cadastrar {
+.navbar-nav {
+	width: 100%;
+}
+#icon-gft{
+	width: 50px;
+	position: fixed;
+	float:none;
+	right: 0;
+	bottom: 0;
+	margin: 0 10px 10px 0;
+}
+#icon-gft img {
+	width: 100%;
+	z-index: 10;
+}
+#align-perfil {
+	margin-left: auto;
+}
+/*Cards Form*/
+.g6-card-forms-container-a, .g6-card-forms-container-b{
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: center;
-	padding-top: 30px;
-	padding-bottom: 20px;
+	align-items: center;
+	min-width: 350px;
 }
-
-.card-header-icons {
-	background-color: #00326B;
+.g6-card-forms-container-a{
+	max-width: 550px;
+	height: 100vh;
+}
+.g6-card-forms-container-b{
+	max-width: 800px;
+	height: 89vh;
+}
+.g6-main-card {
+	box-shadow: 5px 5px 10px var(--corA2);
+	width: 100%;
+	overflow: auto;
+}
+.g6-main-card-login, .g6-main-card-cadastro{
+	height: 100vh;
+}
+.g6-main-card-login{
+	max-height: 650px;
+}
+.g6-main-card-cadastro {
+	max-height: 750px;
+}
+.g6-main-card-cadastro-evento {
+	max-height: 650px;
+	height: 95vh;
+}
+.g6-card-header-title-b1{
+	background-color: var(--corA);
 	opacity: 0.3;
 	border-bottom: 0px;
 	display: flex;
@@ -56,29 +135,103 @@ body {
 	justify-content: center;
 	justify-items: center;
 	align-items: center;
+	color: var(--branco);
+	opacity: 1.0;
 }
-.card-header-title-usuario{
-	color: white;
-	
+.g6-card-header-title-b2 {
+	background-color: white;
+	border-bottom: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-
-.form-usuario {
-	color: #00326B;
+.g6-title-card-header-b2{
+	color: var(--corA);
+	display: inline;
+	align-self: flex-end;
+	padding-top: 20px;
+	margin-bottom: 0;
+	text-align: center;
+}
+#logo-gft-card-form{
+	width: 140px;
+}
+.card-text-entrar-cadastrar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding-top: 30px;
+	padding-bottom: 20px;
+}
+.g6-form-card {
+	color: var(--corA);
 	display: flex;
 	flex-direction: column;
-	padding: 10px 40px;
+	padding: 0 40px;
 }
-
-.btn-usuario-entrar-cadastrar {
-	background-color: #00326B;
-	color: white;
+.g6-form-card table{
+	text-align: center;
+}
+.table-card-forms thead tr th{
+	color: var(--corA);
+}
+.g6-btn-card-forms {
+	background-color: var(--corA);
+	color: var(--branco);
 	font-weight: 500;
 	box-align: right;
 	align-self: center;
 	width: 100%;
 	border-radius: 2px;
 }
-
+.g6-btn-card-forms:hover{
+	background-color: var(--corA1);
+	color: var(--branco);
+}
 .color-red {
-	color: red;
+	color: var(--vermelho);
+}
+/*Etapas Cadastrar Eventos*/
+#etapas{
+	width: 95%;
+	margin-bottom: 15px;
+	display: flex;
+	justify-content: space-between;
+}
+#etapas span {
+	width: 32%;
+	height: 3px;
+}
+.e1 {
+	background-color: var(--corA2);
+}
+.e2 {
+	background-color: var(--corC);
+}
+.e3 {
+	background-color: var(--corA);
+}
+/*Lista De dias - Criação de Eventos*/
+.adicionar-overflow-auto{
+	overflow: auto;
+	height: 30vh;
+}
+
+.listar-atividades-do-dia {
+	height: 13vh;
+}
+
+.g6-margin-top {
+	padding-top: 30px;
+}
+/*Ranking*/
+.g6-card-ranking{
+	width: 100%;
+	text-align: center;
+}
+.g6-card-title-ranking, .g6-card-ranking th{
+	color: var(--corA);
+}
+.g6-width-30-porcento{
+	width: 30%;
 }

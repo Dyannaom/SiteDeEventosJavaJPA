@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
+
+<head>
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="g6-margin-top">
+			<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'" th:if="${mensagem != null}"
+				th:text="${mensagem}">
+			</div>
+
+			<div class="card g6-card-ranking">
+				<div class="card-body">
+					<h4 class="card-title g6-card-title-ranking">Atualizar Ranking de <span th:text="${evento.nome}"></span></h4>
+				</div>
+				<div class="card-body" th:if="${not #lists.isEmpty(ranking.pontuacaoPorGrupo)}">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Grupo </th>
+								<th scope="col">Pontuação</th>
+								<th scope="col">Opções</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="pontuacaoPorGrupo: ${ranking.pontuacaoPorGrupo}">
+								<td th:text="${pontuacaoPorGrupo.grupo.nome}"></td>
+								<td th:text="${pontuacaoPorGrupo.pontuacaoFinal}"></td>
+								<td class="g6-width-30-porcento">
+									<a class="btn g6-btn-card-forms btn-sm"
+										style="padding: 5px 30px;" th:href="@{/evento/ranking/atualizarPontuacaoGrupo?(idPontuacaoPorGrupo=${pontuacaoPorGrupo.id})}">Atualizar Pontuação do grupo</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>

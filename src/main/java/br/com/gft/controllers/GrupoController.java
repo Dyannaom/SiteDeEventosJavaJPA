@@ -18,62 +18,82 @@ import br.com.gft.services.ParticipanteEventoService;
 @Controller
 @RequestMapping("grupo")
 public class GrupoController {
-	
+
 	@Autowired
 	private GrupoService grupoService;
-	
+
 	@Autowired
 	private ParticipanteEventoService participanteEventoService;
 	
+	/*
 	@RequestMapping(method = RequestMethod.GET, path = "/editar")
 	public ModelAndView editarGrupo(@RequestParam(required = false) Long id) {
 		ModelAndView mv = new ModelAndView("grupo/formGrupo.html");
-		if(id==null) {
+		if (id == null) {
 			mv.addObject("grupo", new Grupo());
-		}else {
+		} else {
 			try {
 				mv.addObject("grupo", grupoService.obterGrupo(id));
-			}catch(Exception e) {
+			} catch (Exception e) {
 				mv.addObject("mensagem", e.getMessage());
 			}
 		}
 		mv.addObject("listaParticipantes", participanteEventoService.listarParticipantesDoEvento());
 		return mv;
-}
-	
-	@RequestMapping(method = RequestMethod.POST, path = "editar")
-	public ModelAndView salvarGrupo(@Valid Grupo grupo, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	}
+	*/
+
+	/*@RequestMapping(method = RequestMethod.POST, path = "salvar")
+	public ModelAndView salvarGrupo(@Valid Grupo grupo, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 		ModelAndView mv;
-		if(!bindingResult.hasErrors()) {
+		if (!bindingResult.hasErrors()) {
 			mv = new ModelAndView("redirect:/grupo");
-			grupoService.salvarGrupo(grupo);		
+			grupoService.salvarGrupo(grupo);
 			mv.addObject("grupo", grupo);
 			redirectAttributes.addFlashAttribute("mensagem", "Grupo salvo com sucesso!");
 		} else {
 			mv = new ModelAndView("grupo/formGrupo.html");
-		}		
+		}
+		return mv;
+	}*/
+	
+	@RequestMapping(method = RequestMethod.POST, path = "salvar")
+	public ModelAndView salvarGrupo(@Valid Grupo grupo, BindingResult bindingResult,
+			RedirectAttributes ra) {
+		ModelAndView mv;
+		if (!bindingResult.hasErrors()) {
+			grupoService.salvarGrupo(grupo);
+			mv = new ModelAndView("redirect:/evento/etapaTresA?&id=" + grupo.getEvento().getId());
+			mv.addObject("grupo", grupo);
+			ra.addFlashAttribute("mensagem", "Grupo salvo com sucesso!");
+			ra.addFlashAttribute("cor", "success");
+		} else {
+			mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-2/etapa-2-B.html");
+			ra.addAttribute("grupo", new Grupo());
+		}
 		return mv;
 	}
-	
-	@RequestMapping(method=RequestMethod.GET, path = "")
+
+	@RequestMapping(method = RequestMethod.GET, path = "")
 	public ModelAndView listarGrupos() {
-		ModelAndView mv = new ModelAndView("grupo/listGrupo.html");
+		ModelAndView mv = new ModelAndView("/grupo/listGrupo.html");
 		try {
 			mv.addObject("listaGrupo", grupoService.listarTodosGrupos());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			mv.addObject("mensagem", e.getMessage());
 		}
 		mv.addObject("listaParticipantes", participanteEventoService.listarParticipantesDoEvento());
 		mv.addObject("quantidadeGrupo", grupoService.listarTodosGrupos().size());
 		return mv;
 	}
-	
-	@RequestMapping(method=RequestMethod.GET, path = "excluir")
+
+	@RequestMapping(method = RequestMethod.GET, path = "excluir")
 	public ModelAndView excluirGrupo(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView("redirect:/grupo");
 		try {
 			grupoService.excluirGrupo(id);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			mv.addObject("mensagem", e.getMessage());
 		}
 		return mv;

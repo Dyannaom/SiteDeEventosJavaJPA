@@ -1,14 +1,10 @@
 package br.com.gft.entities;
 
-import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -27,15 +23,13 @@ public class ParticipanteEvento {
 	private String email;
 	@Size(min = 4, max = 4, message = "Deve apenas 4 letras")
 	@NotEmpty(message = "Nome não pode ser branco")
-	@Column(unique = true)
 	private String quatroLetras;
-	@OneToMany	
-	private List<Evento> listaDeEventosQueEstaParticipando;
-	
 	@ManyToOne
 	private Grupo grupo;
-	
 	private Boolean isAtivo;
+	private Integer pontuacaoPresenca;
+	private Integer pontuacaoAtividadeDoEvento;
+
 	
 	public Long getId() {
 		return id;
@@ -67,12 +61,6 @@ public class ParticipanteEvento {
 	public void setQuatroLetras(String quatroLetras) {
 		this.quatroLetras = quatroLetras;
 	}
-	public List<Evento> getListaDeEventosQueEstaParticipando() {
-		return listaDeEventosQueEstaParticipando;
-	}
-	public void setListaDeEventosQueEstaParticipando(List<Evento> listaDeEventosQueEstaParticipando) {
-		this.listaDeEventosQueEstaParticipando = listaDeEventosQueEstaParticipando;
-	}	
 	public Boolean getIsAtivo() {
 		return isAtivo;
 	}
@@ -86,5 +74,18 @@ public class ParticipanteEvento {
 	public void setGrupo(Grupo grupo) {
 		this.grupo = grupo;
 	}
+	public Integer getPontuacaoPresenca() {
+		return pontuacaoPresenca;
+	}
+	public void setPontuacaoPresenca(Integer pontuacaoPresenca) {
+		this.pontuacaoPresenca = pontuacaoPresenca;
+	}
+	public Integer getPontuacaoAtividadeDoEvento() {
+		return pontuacaoAtividadeDoEvento;
+	}
+	public void setPontuacaoAtividadeDoEvento(Integer pontuacaoAtividadeDoEvento) {
+		this.pontuacaoAtividadeDoEvento = pontuacaoAtividadeDoEvento;
+	}
+	
 		
 }

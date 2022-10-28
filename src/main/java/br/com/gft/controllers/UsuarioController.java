@@ -23,7 +23,7 @@ public class UsuarioController {
 
 	@RequestMapping
 	public ModelAndView loginUsuario() {
-		ModelAndView mv = new ModelAndView("usuarios/form/login.html");
+		ModelAndView mv = new ModelAndView("area-acesso-adm/usuario/form/login.html");
 		mv.addObject("usuario", new Usuario());
 		return mv;
 	}
@@ -35,7 +35,7 @@ public class UsuarioController {
 		try {
 			Usuario usuarioEncontrado = usuarioService.obterUsuarioPelasQuatroLetras(usuario.getQuatroLetras());
 			if (!usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
-				mv = new ModelAndView("/usuarios/form/login.html");
+				mv = new ModelAndView("area-acesso-adm/usuario/form/login.html");
 				usuario.setSenha(null);
 				mv.addObject("usuario", usuario);
 				mv.addObject("mensagem", "Senha incorreta!");
@@ -48,7 +48,7 @@ public class UsuarioController {
 			}
 
 		} catch (Exception e) {
-			mv = new ModelAndView("/usuarios/form/login.html");
+			mv = new ModelAndView("area-acesso-adm/usuario/form/login.html");
 			mv.addObject("usuario", new Usuario());
 			mv.addObject("mensagem", e.getMessage());
 			mv.addObject("cor", "danger");
@@ -60,7 +60,7 @@ public class UsuarioController {
 
 	@RequestMapping(method = RequestMethod.GET, path = "editar")
 	public ModelAndView editarUsuario(@RequestParam(required = false) Long id) {
-		ModelAndView mv = new ModelAndView("usuarios/form/cadastro.html");
+		ModelAndView mv = new ModelAndView("area-acesso-adm/usuario/form/cadastro.html");
 
 		if (id == null) {
 			mv.addObject("usuario", new Usuario());
@@ -87,10 +87,11 @@ public class UsuarioController {
 		if (!bindingResult.hasErrors() && usuarioComEssasQuatroLetrasJaExiste && usuarioComEsseEmailJaExiste) {
 			usuario.setStatus(true);
 			usuarioService.salvarUsuario(usuario);
-			mv = new ModelAndView("redirect:/usuario/obter?&id=" + usuario.getId());
-			ra.addFlashAttribute("mensagem", "Usuario salva com sucesso!");
+			mv = new ModelAndView("redirect:/usuario");
+			ra.addFlashAttribute("mensagem", "Usuario salvo com sucesso!");
+			ra.addFlashAttribute("cor", "success");
 		} else {
-			mv = new ModelAndView("usuarios/form/cadastro.html");
+			mv = new ModelAndView("area-acesso-adm/usuario/form/cadastro.html");
 			if(!usuarioComEssasQuatroLetrasJaExiste && !usuarioComEsseEmailJaExiste)
 				mv.addObject("mensagem", "Usuario Com essas 4 letras e com esse email já Existem!");
 			else {
@@ -108,7 +109,7 @@ public class UsuarioController {
 
 	@RequestMapping(method = RequestMethod.GET, path = "obter")
 	public ModelAndView pegarUsuario(@RequestParam Long id) {
-		ModelAndView mv = new ModelAndView("usuarios/perfil.html");
+		ModelAndView mv = new ModelAndView("area-acesso-adm/usuario/perfil.html");
 		try {
 			mv.addObject("usuario", usuarioService.obterUsuario(id));
 		} catch (Exception e) {
@@ -141,7 +142,7 @@ public class UsuarioController {
 
 	@RequestMapping(method = RequestMethod.GET, path = "home")
 	public ModelAndView home() {
-		ModelAndView mv = new ModelAndView("eventos/home.html");
+		ModelAndView mv = new ModelAndView("area-acesso-adm/home.html");
 		return mv;
 	}
 

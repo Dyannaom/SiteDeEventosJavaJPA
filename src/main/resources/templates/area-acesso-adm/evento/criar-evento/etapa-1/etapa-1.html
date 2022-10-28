@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
+
+<head>
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<div layout:fragment="content">
+
+		<div class="container g6-card-forms-container-b">
+			<div id="etapas">
+				<span class="e2"></span>
+				<span class="e1"></span>
+				<span class="e1"></span>
+			</div>
+			<div class="card g6-main-card g6-main-card-cadastro-evento mb-3">
+				<div class="card-header g6-card-header-title-b1">
+					<div><img id="" th:src="@{/images/icons/calendario.ico}" /></div>
+					<h5 class="card-title">Cadastrar Evento</h5>
+				</div>
+				<div class="card-header g6-card-header-title-b2 mb-3">
+					<h5 class="card-title g6-title-card-header-b2">Etapa 1 - Informações Iniciais </h5>
+				</div>
+				<div class="card-body mb-3">
+					<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'"
+						th:if="${mensagem != null}" th:text="${mensagem}">
+					</div>
+
+					<form class="g6-form-card" method="POST" th:object="${evento}" th:action="@{/evento/salvar}">
+						<input type="hidden" th:field="*{id}"></input>
+						<div class="form-group mb-3">
+							<label for="nome">Nome: <span class="color-red">*</span>
+							</label> <input class="form-control" type="text" th:field="*{nome}" required></input>
+							<div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+						</div>
+
+						<div class="form-group mb-3">
+							<label for="dataInicio">Data Início: <span class="color-red">*</span>
+							</label> <input class="form-control" type="date" th:field="*{dataInicio}"></input>
+							<div class="text-danger" th:if="${#fields.hasErrors('dataInicio')}"
+								th:errors="*{dataInicio}">
+							</div>
+						</div>
+
+						<div class="form-group mb-3">
+							<label for="dataFinal">Data Final: <span class="color-red">*</span>
+							</label> <input class="form-control" type="date" th:field="*{dataFinal}"></input>
+							<div class="text-danger" th:if="${#fields.hasErrors('dataFinal')}" th:errors="*{dataFinal}">
+							</div>
+						</div>
+
+						<div class="form-check mb-3">
+							<label class="form-check-label" for="flexCheckChecked">
+								Incluir final de semana?
+							</label>
+							<input class="form-check-input" id="flexCheckChecked" type="checkbox" th:value="1" th:field="*{incluiFinalDeSemana}" checked>
+						</div>
+
+						<button type="submit" class="btn g6-btn-card-forms mb-3">
+							Próximo
+						</button>
+					</form>
+
+
+
+					<div class="card-header g6-card-header-title-b2 mb-3">
+						<div><img id="logo-gft-card-form" th:src="@{/images/icons/logoGFT_1.png}" /></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+
+</html>

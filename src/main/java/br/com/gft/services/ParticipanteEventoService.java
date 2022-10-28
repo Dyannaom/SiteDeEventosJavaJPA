@@ -1,13 +1,21 @@
 package br.com.gft.services;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.gft.entities.Atividade;
+import br.com.gft.entities.DiaDeEvento;
 import br.com.gft.entities.ParticipanteEvento;
+import br.com.gft.entities.PontuacaoPorGrupo;
+import br.com.gft.entities.StatusAtividade;
+import br.com.gft.entities.StatusPresenca;
 import br.com.gft.repositories.ParticipanteEventoRepository;
+import br.com.gft.repositories.StatusAtividadeRepository;
+import br.com.gft.repositories.StatusPresencaRepository;
 
 
 
@@ -16,10 +24,35 @@ public class ParticipanteEventoService {
 	
 	@Autowired
 	ParticipanteEventoRepository participanteEventoRepository;
+	@Autowired
+	StatusPresencaRepository statusPresencaRepository;
+	@Autowired
+	StatusAtividadeRepository statusAtividadeRepository;
 
 	
 	public void salvarParticipante(ParticipanteEvento participante) {
 		participanteEventoRepository.save(participante);
+		
+		List<DiaDeEvento> listaDeDiaEventos = participante.getGrupo().getEvento().getListaDeDias();
+		
+
+		for(DiaDeEvento diaDeEvento: listaDeDiaEventos) {
+			StatusPresenca statusPresenca = new StatusPresenca();
+			statusPresenca.setParticipanteEvento(participante);
+			PontuacaoPorGrupo pontuacaoPorGrupo = participante.getGrupo().getPontuacaoPorGrupo();
+			statusPresenca.setPontuacaoPorGrupo(pontuacaoPorGrupo);
+			statusPresenca.setDiaDeEvento(diaDeEvento);
+			statusPresencaRepository.save(statusPresenca);
+			
+			for(Atividade atividade: diaDeEvento.getAtividadesDoDia()) {
+				StatusAtividade statusAtividade = new StatusAtividade();
+				statusAtividade.setParticipanteEvento(participante);
+				statusAtividade.setStatusPresenca(statusPresenca);
+				statusAtividade.setAtividade(atividade);
+				statusAtividadeRepository.save(statusAtividade);
+			}
+		}
+		
 	}
 	
 	public List<ParticipanteEvento> listarParticipantesDoEvento() {

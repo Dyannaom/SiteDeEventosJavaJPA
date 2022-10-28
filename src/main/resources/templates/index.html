@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout.html}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layoutSemMenu.html}">
+
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 
 </head>
-<body>
-<div layout:fragment="content">
-<h1>Lista de Eventos</h1>
-<h3><a href="/cadastrar">Cadastrar Evento</a></h3>
-	<div th:each="evento : ${eventos}">
-		<div class="row">
-			<p><span th:text="${evento.id}"></span></p>
-			<p><span th:text="${evento.nome}"></span></p>
-			<p><span th:text="${evento.dataInicio}"></span></p>
-			<p><span th:text="${evento.dataFinal}"></span></p>
+
+<body class="backround-color-B">
+
+	<div layout:fragment="content">
+		<div class="flex-box-1" id="principal-index">
+			<div id="bloco-1-index">
+				<img id="img-index-1" th:src="@{/images/icons/logoGFT_1.png}" />
+				<img id="img-index-2" th:src="@{/images/images/img-index-eventos-gft.png}" />
+			</div>
+			<div id="bloco-2-index">
+				<h1>Eventos GFT</h1>
+				<a class="btn btn-light btn-sm" th:href="@{evento/}">Ver Eventos</a>
+				<a class="btn btn-light btn-sm" th:href="@{usuario/}">Entrar como administrador</a>
+			</div>
 		</div>
 	</div>
-</div>
+
 </body>
+
 </html>

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.gft.entities.Grupo;
 import br.com.gft.entities.ParticipanteEvento;
+import br.com.gft.entities.PontuacaoPorGrupo;
 import br.com.gft.repositories.GrupoRepository;
 import br.com.gft.repositories.ParticipanteEventoRepository;
+import br.com.gft.repositories.PontuacaoPorGrupoRepository;
 
 @Service
 public class GrupoService {
@@ -19,9 +21,17 @@ public class GrupoService {
 	
 	@Autowired
 	private ParticipanteEventoRepository participanteEventoRepository;
+	
+	@Autowired
+	private PontuacaoPorGrupoRepository pontuacaoPorGrupoRepository;
 
 	public Grupo salvarGrupo(Grupo grupo) {
-		return grupoRepository.save(grupo);
+		grupo = grupoRepository.save(grupo);
+		PontuacaoPorGrupo pontuacao = new PontuacaoPorGrupo();
+		pontuacao.setGrupo(grupo);
+		pontuacao.setRanking(grupo.getEvento().getRanking());
+		pontuacaoPorGrupoRepository.save(pontuacao);
+		return grupo;
 	}
 
 	public List<Grupo> listarGrupos(String nome, Integer quantidadeDePessoas) {
