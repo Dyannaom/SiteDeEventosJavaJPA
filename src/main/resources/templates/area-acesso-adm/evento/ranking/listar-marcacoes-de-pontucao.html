@@ -15,7 +15,7 @@
 
 			<div class="card g6-card-ranking">
 				<div class="card-body">
-					<h4 class="card-title g6-card-title-ranking">Atualizar Ranking de <span th:text="${pontuacaoPorGrupo.grupo.evento.nome}"></span></h4>
+					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação do <span th:text="${pontuacaoPorGrupo.grupo.nome}"></span></h4>
 				</div>
 				<div class="card-body" th:if="${not #lists.isEmpty(pontuacaoPorGrupo.listaStatusPresenca)}">
 					<table class="table table-striped">
@@ -27,7 +27,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="statusPresenca: ${pontuacaoPorGrupo.listaStatusPresenca}">
-								<td th:text="${statusPresenca.diaDeEvento.data}"></td>
+								<td th:text="${#temporals.format(statusPresenca.diaDeEvento.data, 'dd/MM/yyyy')}"></td>
 								<td class="g6-width-30-porcento">
 									<a class="btn g6-btn-card-forms btn-sm"
 										style="padding: 5px 30px;" >Atualizar Pontuação do dia</a>

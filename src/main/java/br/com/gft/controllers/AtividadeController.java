@@ -34,6 +34,9 @@ public class AtividadeController {
 			DiaDeEvento diaDeEvento = atividade.getDiaDeEvento();
 			Evento evento = diaDeEvento.getEvento();
 			mv = new ModelAndView("redirect:/evento/etapaDoisB?idDia="+diaDeEvento.getId()+"&"+"idEvento="+ evento.getId());
+			atividadeServices.saveAtividade(atividade);
+			ra.addFlashAttribute("mensagem", "Atividade criado com sucesso!");
+			ra.addFlashAttribute("cor", "success");
 		} else {
 			mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-2/etapa-2-B.html");
 			ra.addAttribute("atividade", new Atividade());
@@ -89,6 +92,4 @@ public class AtividadeController {
 
 		return mv;
 	}
-
-
 }
