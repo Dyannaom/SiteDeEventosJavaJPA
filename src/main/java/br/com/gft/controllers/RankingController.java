@@ -89,18 +89,12 @@ public class RankingController {
 	
 	@RequestMapping(method = RequestMethod.POST, path = "statusPresenca/salvar")
 	public ModelAndView salvarStatusPresenca(PontuacaoPorGrupo pontuacaoPorGrupo, RedirectAttributes ra){
-		
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-presenca.html");
 		
 		for(StatusPresenca statusPresenca: pontuacaoPorGrupo.getListaStatusPresenca()) {
 			statusPresencaService.salvarStatusPresenca(statusPresenca);
 		}
-		
-		System.out.println("Pontuacao por grupo: " + pontuacaoPorGrupo);
-		 System.out.println(pontuacaoPorGrupoService.salvarPontuacaoPorGrupo(pontuacaoPorGrupo));
-		
 		return mv;
-		
 	}
 	
 

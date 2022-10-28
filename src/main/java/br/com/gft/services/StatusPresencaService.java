@@ -55,8 +55,16 @@ public class StatusPresencaService {
 		return statusPresencaRepository.findByPontuacaoPorGrupoAndDiaDeEvento(pontuacaoPorGrupo, diaDeEvento);
 	}
 	
-	public StatusPresenca salvarStatusPresenca(StatusPresenca statusPresenca) {
-		return statusPresencaRepository.save(statusPresenca);
+	public void salvarStatusPresenca(StatusPresenca statusPresenca) {
+		try {
+			StatusPresenca statusPresenca2 =  obterStatusPresenca(statusPresenca.getId());
+			statusPresenca2.setAtrasado(statusPresenca.isAtrasado());
+			statusPresenca2.setAusente(statusPresenca.isAusente());
+			statusPresenca2.setPresente(statusPresenca.isPresente());
+			statusPresencaRepository.save(statusPresenca2);
+		}catch(Exception e) {
+			
+		}
 	}
 
 }
