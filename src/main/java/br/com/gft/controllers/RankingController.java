@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.gft.entities.Atividade;
 import br.com.gft.entities.Evento;
 import br.com.gft.entities.PontuacaoPorGrupo;
+import br.com.gft.entities.StatusAtividade;
 import br.com.gft.entities.StatusPresenca;
 import br.com.gft.services.EventoService;
 import br.com.gft.services.PontuacaoPorGrupoService;
@@ -98,10 +100,10 @@ public class RankingController {
 	}
 	
 
-
-	@RequestMapping(method = RequestMethod.GET, path = "atualizarPontuacaoAtividades")
+	
+	@RequestMapping(method = RequestMethod.GET, path = "listarAtividadesDoDia")
 	public ModelAndView verificarAtividade(@RequestParam Long idStatusPresenca) {
-		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-atividades.html");
+		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/listar-atividades-do-dia.html");
 		try {
 			StatusPresenca statusPresenca = statusPresencaService.obterStatusPresenca(idStatusPresenca);
 			mv.addObject("statusPresenca", statusPresenca);
@@ -111,6 +113,43 @@ public class RankingController {
 		}
 		return mv;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, path = "atualizarPontuacaoAtividades")
+	public ModelAndView atualizarAtividadeDoDia(@RequestParam Long idStatusPresenca) {
+		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-atividades.html");
+		try {
+			StatusPresenca statusPresenca = statusPresencaService.obterStatusPresenca(idStatusPresenca);
+			Atividade atividade = statusPresenca.getListaStatusAtividade().get(0).getAtividade();
+			List<StatusAtividade> listaStatusAtividade = statusAtividadeService.obterStatusAtividadePorAtividade(atividade);
+			if(!listaStatusAtividade.isEmpty()) {
+				mv.addObject("statusPresenca", statusPresenca);
+				mv.addObject("listaStatusAtividade", listaStatusAtividade);
+				mv.addObject("atividadeNome", listaStatusAtividade.get(0).getAtividade().getNome());
+			} else {
+				mv.addObject("mensagem", "Nenhuma participante para atualizar atividade");
+				mv.addObject("cor", "danger");
+			}
+		} catch (Exception e) {
+			mv.addObject("mensagem", e.getMessage());
+			mv.addObject("cor", "danger");
+		}
+		return mv;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, path="statusAtividade/salvar")
+	public ModelAndView salvarStatusAtividade(StatusPresenca statusPresenca) {
+		
+		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-atividades.html");
+		
+		for(StatusAtividade statusAtividade: statusPresenca.getListaStatusAtividade()){
+			statusAtividadeService.salvarStatusAtividade(statusAtividade);
+		}
+		return mv;
+	}
+	
+	
+	
+	
 	
 
 }

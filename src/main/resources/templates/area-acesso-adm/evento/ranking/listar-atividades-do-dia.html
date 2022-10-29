@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
+
+<head>
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="g6-margin-top">
+			<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'" th:if="${mensagem != null}"
+				th:text="${mensagem}">
+			</div>
+			<div class="alert alert-danger d-flex justify-content-center"
+				th:if="${#lists.isEmpty(statusPresenca.listaStatusAtividade)}">
+				Nenhuma atividade para atualizar
+			</div>
+
+			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(statusPresenca.listaStatusAtividade)}">
+				<div class="card-body">
+					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação das atividades do dia<span
+							th:text="${statusPresenca.diaDeEvento.data}"></span></h4>
+				</div>
+				<div class="card-body">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Nome: </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="statusAtividade: ${statusPresenca.listaStatusAtividade}">
+								<td class="g6-width-30-porcento">
+									<div class="g6-flex-box-row">
+										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
+											style="padding: 5px 30px;" th:text="${statusAtividade.atividade.nome}"
+											th:href="@{/evento/ranking/atualizarPontuacaoAtividades?(idStatusPresenca=${statusPresenca.id})}"></a>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>

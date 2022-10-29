@@ -24,13 +24,15 @@ public class StatusAtividade {
 	private boolean naoEntregue;
 	
 
+	
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public boolean isNaoEntregue() {
 		return naoEntregue;
 	}

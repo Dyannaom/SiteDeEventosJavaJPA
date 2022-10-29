@@ -12,38 +12,57 @@
 			<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'" th:if="${mensagem != null}"
 				th:text="${mensagem}">
 			</div>
-			<div class="alert alert-danger d-flex justify-content-center"
-				th:if="${#lists.isEmpty(pontuacaoPorGrupo.listaStatusPresenca)}">
-				Nenhum participante cadastrado no grupo
-			</div>
 
-			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(pontuacaoPorGrupo.listaStatusPresenca)}">
+			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(listaStatusAtividade)}">
 				<div class="card-body">
-					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação do <span
-							th:text="${pontuacaoPorGrupo.grupo.nome}"></span></h4>
+					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação da <span
+							th:text="${atividadeNome}"></span></h4>
 				</div>
 				<div class="card-body">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th scope="col">Dia </th>
-								<th scope="col">Opções</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="statusPresenca: ${pontuacaoPorGrupo.listaStatusPresenca}">
-								<td th:text="${#temporals.format(statusPresenca.diaDeEvento.data, 'dd/MM/yyyy')}"></td>
-								<td class="g6-width-30-porcento">
-									<div class="g6-flex-box-row">
-										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
-											style="padding: 5px 30px;">Presença</a>
-										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
-											style="padding: 5px 30px;">Atividades</a>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<form method="POST" th:object="${statusPresenca}" th:action="@{statusAtividade/salvar}">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">Participante </th>
+									<th scope="col">Entregue</th>
+									<th scope="col">Entregue Atrasado</th>
+									<th scope="col">Não Entregue</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr th:each="statusAtividade, iter : ${listaStatusAtividade}">
+									<input type="hidden" th:field="*{listaStatusAtividade[__${iter.index}__].id}">
+									<input type="hidden"
+										th:field="*{listaStatusAtividade[__${iter.index}__].participanteEvento}">
+
+									<input type="hidden"
+										th:field="*{listaStatusAtividade[__${iter.index}__].statusPresenca}">
+
+									<td th:text="${statusAtividade.participanteEvento.nome}"></td>
+									<td>
+										<input class="form-check" type="checkbox"
+											th:field="*{listaStatusAtividade[__${iter.index}__].entregue}" />
+
+									</td>
+									<td>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												th:field="*{listaStatusAtividade[__${iter.index}__].entregueAtrasado}" />
+										</div>
+									</td>
+									<td>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												th:field="*{listaStatusAtividade[__${iter.index}__].naoEntregue}" />
+										</div>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+						<button type="submit" class="btn g6-btn-card-forms">Salvar</button>
+					</form>
 				</div>
 			</div>
 		</div>

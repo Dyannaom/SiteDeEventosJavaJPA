@@ -29,48 +29,49 @@ public class PontuacaoPorGrupoService {
 	@Autowired
 	RankingRepository rankingRepository;
 
-	/*
-	 * public Integer conferirBonusPresenca(Long id) {
-	 * 
-	 * Optional<Evento> evento = eventoRepository.findById(id); Optional<Grupo>
-	 * grupo = grupoRepository.findById(id); Optional<PontuacaoPorGrupo>
-	 * pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
-	 * 
-	 * Integer soma = 0; Integer bonusAuxiliar =
-	 * evento.get().getDiaDeEvento().size()
-	 * grupo.get().getListaDeParticipantesDoGrupo().size() * 10;
-	 * 
-	 * for (ParticipanteEvento participanteEvento1 :
-	 * grupo.get().getListaDeParticipantesDoGrupo()) { soma +=
-	 * participanteEvento1.getPontuacaoPresenca(); }
-	 * 
-	 * if (bonusAuxiliar.equals(evento.get().getDiaDeEvento().size() * soma)) {
-	 * pontuacaoPorGrupo.get().setPontuacaoBonusPresenca(5); }
-	 * 
-	 * return pontuacaoPorGrupo.get().getPontuacaoBonusPresenca();
-	 * 
-	 * }
-	 * 
-	 * public Integer conferirBonusAtividade(Long id) {
-	 * 
-	 * Optional<Evento> evento = eventoRepository.findById(id); Optional<Grupo>
-	 * grupo = grupoRepository.findById(id); Optional<PontuacaoPorGrupo>
-	 * pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
-	 * 
-	 * Integer soma = 0; Integer bonusAuxiliar =
-	 * evento.get().getDiaDeEvento().size()
-	 * grupo.get().getListaDeParticipantesDoGrupo().size() * (5 * 2);
-	 * 
-	 * for (ParticipanteEvento participanteEvento1 :
-	 * grupo.get().getListaDeParticipantesDoGrupo()) { soma +=
-	 * participanteEvento1.getPontuacaoAtividadeDoEvento(); } if
-	 * (bonusAuxiliar.equals(evento.get().getDiaDeEvento().size() * soma)) {
-	 * pontuacaoPorGrupo.get().setPontuacaoBonusAtividade(3); }
-	 * 
-	 * return pontuacaoPorGrupo.get().getPontuacaoBonusAtividade();
-	 * 
-	 * }
-	 */
+	public Integer conferirBonusPresenca(Long id) {
+
+		Optional<Evento> evento = eventoRepository.findById(id);
+		Optional<Grupo> grupo = grupoRepository.findById(id);
+		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
+
+		Integer soma = 0;
+		Integer bonusAuxiliar = evento.get().getDiaDeEvento().size()
+				* grupo.get().getListaDeParticipantesDoGrupo().size() * 10;
+
+		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
+			soma += participanteEvento1.getPontuacaoPresenca();
+		}
+
+		if (bonusAuxiliar.equals(evento.get().getDiaDeEvento().size() * soma)) {
+			pontuacaoPorGrupo.get().setPontuacaoBonusPresenca(5);
+		}
+
+		return pontuacaoPorGrupo.get().getPontuacaoBonusPresenca();
+
+	}
+
+	public Integer conferirBonusAtividade(Long id) {
+
+		Optional<Evento> evento = eventoRepository.findById(id);
+		Optional<Grupo> grupo = grupoRepository.findById(id);
+		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
+
+		Integer soma = 0;
+		Integer bonusAuxiliar = evento.get().getDiaDeEvento().size()
+				* grupo.get().getListaDeParticipantesDoGrupo().size() * (5 * 2);
+
+		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
+			soma += participanteEvento1.getPontuacaoAtividadeDoEvento();
+		}
+		if (bonusAuxiliar.equals(evento.get().getDiaDeEvento().size() * soma)) {
+			pontuacaoPorGrupo.get().setPontuacaoBonusAtividade(3);
+		}
+
+		return pontuacaoPorGrupo.get().getPontuacaoBonusAtividade();
+
+	}
+
 
 	public Integer pontuacaoFinal(Long id) {
 
@@ -97,12 +98,12 @@ public class PontuacaoPorGrupoService {
 
 	public PontuacaoPorGrupo obterPontuacaoPorGrupo(Long id) throws Exception {
 		Optional<PontuacaoPorGrupo> pontuacao = pontuacaoPorGrupoRepository.findById(id);
-		if(pontuacao.isEmpty())
+		if (pontuacao.isEmpty())
 			throw new Exception("Não Existe a Pontuacao desse Grupo no Ranking");
 		else
 			return pontuacao.get();
 	}
-	
+
 	public PontuacaoPorGrupo salvarPontuacaoPorGrupo(PontuacaoPorGrupo pontuacaoPorGrupo) {
 		return this.pontuacaoPorGrupoRepository.save(pontuacaoPorGrupo);
 	}
