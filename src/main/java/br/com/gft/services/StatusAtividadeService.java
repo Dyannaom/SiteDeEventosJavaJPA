@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.gft.entities.Atividade;
-import br.com.gft.entities.Grupo;
+import br.com.gft.entities.DiaDeEvento;
 import br.com.gft.entities.ParticipanteEvento;
+import br.com.gft.entities.PontuacaoPorGrupo;
 import br.com.gft.entities.StatusAtividade;
 import br.com.gft.repositories.ParticipanteEventoRepository;
 import br.com.gft.repositories.PontuacaoPorGrupoRepository;
 import br.com.gft.repositories.StatusAtividadeRepository;
+import br.com.gft.repositories.StatusPresencaRepository;
 
 @Service
 public class StatusAtividadeService {
@@ -22,6 +24,8 @@ public class StatusAtividadeService {
 	ParticipanteEventoRepository participanteEventoRepository;
 	@Autowired
 	StatusAtividadeRepository statusAtividadeRepository;
+	@Autowired
+	StatusPresencaRepository statusPresencaRepository;
 	@Autowired
 	PontuacaoPorGrupoRepository pontuacaoPorGrupoRepository;
 
@@ -59,17 +63,24 @@ public class StatusAtividadeService {
 			return statusAtividade.get();
 	}
 
-	public List<StatusAtividade> obterStatusAtividadePorAtividadeEPorGrupo(Atividade atividade, Grupo grupo) {
-		List<StatusAtividade> listaStatus = statusAtividadeRepository.findAll();
-		List<StatusAtividade> listaStatusPorAtividadeEPorGrupo = new ArrayList<>();
-		for (StatusAtividade statusAtividade : listaStatus) {
-			if (statusAtividade.getParticipanteEvento().getGrupo().equals(grupo)
-					&& statusAtividade.getAtividade().getId().equals(atividade.getId())) {
-				listaStatusPorAtividadeEPorGrupo.add(statusAtividade);
+	public List<StatusAtividade> 
+	listarStatusAtividadePorDiaDeEventoEPorAtividadeEPorPontuacaoPorGrupo(DiaDeEvento diaDeEvento, Atividade atividade, PontuacaoPorGrupo pontuacaoPorGrupo) {
+		
+		List<StatusAtividade> listaStatusAtividadePorAtividade = statusAtividadeRepository.findByAtividade(atividade);
+		List<StatusAtividade> listaStatusAtividadeFinal = new ArrayList<>();
+		
+		DiaDeEvento diaDeEventoAtual = null;
+		PontuacaoPorGrupo pontuacaoPorGrupoAtual = null;
+		
+		for(StatusAtividade statusAtividade :listaStatusAtividadePorAtividade) {
+			diaDeEventoAtual = statusAtividade.getStatusPresenca().getDiaDeEvento();
+			pontuacaoPorGrupoAtual = statusAtividade.getParticipanteEvento().getGrupo().getPontuacaoPorGrupo();
+			if(diaDeEventoAtual.equals(diaDeEvento) && pontuacaoPorGrupoAtual.equals(pontuacaoPorGrupo)) {
+				listaStatusAtividadeFinal.add(statusAtividade);
 			}
 		}
-
-		return listaStatusPorAtividadeEPorGrupo;
+		return listaStatusAtividadeFinal;
+		
 	}
 
 	public void salvarStatusAtividade(StatusAtividade statusAtividade) {

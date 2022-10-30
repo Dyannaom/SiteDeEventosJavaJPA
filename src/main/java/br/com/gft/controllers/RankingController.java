@@ -1,6 +1,5 @@
 package br.com.gft.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.gft.entities.Atividade;
 import br.com.gft.entities.DiaDeEvento;
 import br.com.gft.entities.Evento;
-import br.com.gft.entities.Grupo;
 import br.com.gft.entities.PontuacaoPorGrupo;
 import br.com.gft.entities.StatusAtividade;
 import br.com.gft.entities.StatusPresenca;
@@ -76,12 +74,13 @@ public class RankingController {
 	@RequestMapping(method = RequestMethod.GET, path = "atualizarPontuacaoPresenca")
 	public ModelAndView verificarPresenca(@RequestParam Long idDiaDeEvento, Long idPontuacaoPorGrupo) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-presenca.html");
-		
+
 		try {
 			PontuacaoPorGrupo pontuacaoPorGrupo = pontuacaoPorGrupoService.obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
 			DiaDeEvento diaDeEvento = diaDeEventoService.obterDiaDeEvento(idDiaDeEvento);
 			List<StatusPresenca> listaDeStatusPresenca = statusPresencaService
 					.listarStatusPresencaPorPontuacaoPorGrupoEPorDiaDeEvento(pontuacaoPorGrupo, diaDeEvento);
+			pontuacaoPorGrupo.setListaStatusPresenca(listaDeStatusPresenca);
 			if (listaDeStatusPresenca.isEmpty()) {
 				mv.addObject("mensagem", "Lista de Presenca vazia!");
 				mv.addObject("cor", "danger");
@@ -108,11 +107,13 @@ public class RankingController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "listarAtividadesDoDia")
-	public ModelAndView verificarAtividade(@RequestParam Long idStatusPresenca, Long idPontuacaoPorGrupo) {
+	public ModelAndView verificarAtividade(@RequestParam Long idDiaDeEvento, Long idPontuacaoPorGrupo) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/listar-atividades-do-dia.html");
 		try {
-			StatusPresenca statusPresenca = statusPresencaService.obterStatusPresenca(idStatusPresenca);
 			PontuacaoPorGrupo pontuacaoPorGrupo = pontuacaoPorGrupoService.obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
+			DiaDeEvento diaDeEvento = diaDeEventoService.obterDiaDeEvento(idDiaDeEvento);
+			StatusPresenca statusPresenca = statusPresencaService
+					.listarStatusPresencaPorPontuacaoPorGrupoEPorDiaDeEvento(pontuacaoPorGrupo, diaDeEvento).get(0);
 			mv.addObject("statusPresenca", statusPresenca);
 			mv.addObject("pontuacaoPorGrupo", pontuacaoPorGrupo);
 		} catch (Exception e) {
@@ -123,21 +124,23 @@ public class RankingController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "atualizarPontuacaoAtividades")
-	public ModelAndView atualizarAtividadeDoDia(@RequestParam Long idStatusAtividade, Long idPontuacaoPorGrupo) {
+	public ModelAndView atualizarAtividadeDoDia(@RequestParam Long idDiaDeEvento, Long idStatusAtividade,
+			Long idPontuacaoPorGrupo) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-atividades.html");
 		try {
 			StatusAtividade statusAtividade = statusAtividadeService.obterStatusAtividade(idStatusAtividade);
+			DiaDeEvento diaDeEvento = diaDeEventoService.obterDiaDeEvento(idDiaDeEvento);
 			Atividade atividade = statusAtividade.getAtividade();
 			PontuacaoPorGrupo pontuacaoPorGrupo = pontuacaoPorGrupoService.obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
-			Grupo grupo = pontuacaoPorGrupo.getGrupo();
+			
 			List<StatusAtividade> listaStatusAtividade = statusAtividadeService
-					.obterStatusAtividadePorAtividadeEPorGrupo(atividade, grupo);
-			List<StatusPresenca> listaStatusPresencas = new ArrayList<>();
-			for (StatusAtividade statusAtividade2 : listaStatusAtividade) {
-				listaStatusPresencas.add(statusAtividade2.getStatusPresenca());
-			}
-			pontuacaoPorGrupo.setListaStatusPresenca(listaStatusPresencas);
-			if (!listaStatusAtividade.isEmpty()) {
+					.listarStatusAtividadePorDiaDeEventoEPorAtividadeEPorPontuacaoPorGrupo(diaDeEvento, atividade,
+							pontuacaoPorGrupo);
+			List<StatusPresenca> listaStatusPresenca = statusPresencaService.obterListaStatusPresencaPorListaStatusAtividade(listaStatusAtividade);
+			
+			pontuacaoPorGrupo.setListaStatusPresenca(listaStatusPresenca);
+
+			if (!listaStatusPresenca.isEmpty()) {
 				mv.addObject("pontuacaoPorGrupo", pontuacaoPorGrupo);
 				mv.addObject("listaSA", listaStatusAtividade);
 				mv.addObject("listaSP", pontuacaoPorGrupo.getListaStatusPresenca());

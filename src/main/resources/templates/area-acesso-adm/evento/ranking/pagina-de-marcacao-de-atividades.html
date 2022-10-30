@@ -42,8 +42,7 @@
 									<input type="hidden"
 										th:field="*{listaStatusPresenca[__${iterSP.index}__].pontuacaoPorGrupo}">
 
-									<tr th:each="statusAtividade, iterSA : ${listaSA}"
-										th:if="${pontuacaoPorGrupo.listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].atividade.id==atividade.id}">
+									<tr th:each="statusAtividade, iterSA : ${pontuacaoPorGrupo.listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade}">
 										<input type="hidden"
 											th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].id}">
 										<input type="hidden"
