@@ -13,13 +13,13 @@
 				th:text="${mensagem}">
 			</div>
 
-			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(listaStatusAtividade)}">
+			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(listaSA)}">
 				<div class="card-body">
 					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação da <span
-							th:text="${atividadeNome}"></span></h4>
+							th:text="${atividade.nome}"></span></h4>
 				</div>
 				<div class="card-body">
-					<form method="POST" th:object="${statusPresenca}" th:action="@{statusAtividade/salvar}">
+					<form method="POST" th:object="${pontuacaoPorGrupo}" th:action="@{statusAtividade/salvar}">
 						<table class="table table-striped">
 							<thead>
 								<tr>
@@ -30,35 +30,51 @@
 								</tr>
 							</thead>
 							<tbody>
-
-								<tr th:each="statusAtividade, iter : ${listaStatusAtividade}">
-									<input type="hidden" th:field="*{listaStatusAtividade[__${iter.index}__].id}">
+								<input type="hidden" th:field="*{id}">
+								<input type="hidden" th:field="*{grupo}">
+								<input type="hidden" th:field="*{ranking}">
+								<div th:each="statusPresenca, iterSP : ${listaSP}">
+									<input type="hidden" th:field="*{listaStatusPresenca[__${iterSP.index}__].id}">
 									<input type="hidden"
-										th:field="*{listaStatusAtividade[__${iter.index}__].participanteEvento}">
-
+										th:field="*{listaStatusPresenca[__${iterSP.index}__].participanteEvento}">
 									<input type="hidden"
-										th:field="*{listaStatusAtividade[__${iter.index}__].statusPresenca}">
+										th:field="*{listaStatusPresenca[__${iterSP.index}__].diaDeEvento}">
+									<input type="hidden"
+										th:field="*{listaStatusPresenca[__${iterSP.index}__].pontuacaoPorGrupo}">
 
-									<td th:text="${statusAtividade.participanteEvento.nome}"></td>
-									<td>
-										<input class="form-check" type="checkbox"
-											th:field="*{listaStatusAtividade[__${iter.index}__].entregue}" />
+									<tr th:each="statusAtividade, iterSA : ${listaSA}"
+										th:if="${pontuacaoPorGrupo.listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].atividade.id==atividade.id}">
+										<input type="hidden"
+											th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].id}">
+										<input type="hidden"
+											th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].participanteEvento}">
+										<input type="hidden"
+											th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].statusPresenca}">
+										<input type="hidden"
+											th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].atividade}">
+										<td
+											th:text="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].participanteEvento.nome}">
+										</td>
+										<td>
+											<input class="form-check" type="checkbox"
+												th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].entregue}" />
 
-									</td>
-									<td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox"
-												th:field="*{listaStatusAtividade[__${iter.index}__].entregueAtrasado}" />
-										</div>
-									</td>
-									<td>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox"
-												th:field="*{listaStatusAtividade[__${iter.index}__].naoEntregue}" />
-										</div>
-									</td>
+										</td>
+										<td>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].entregueAtrasado}" />
+											</div>
+										</td>
+										<td>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox"
+													th:field="*{listaStatusPresenca[__${iterSP.index}__].listaStatusAtividade[__${iterSA.index}__].naoEntregue}" />
+											</div>
+										</td>
 
-								</tr>
+									</tr>
+								</div>
 							</tbody>
 						</table>
 						<button type="submit" class="btn g6-btn-card-forms">Salvar</button>

@@ -13,13 +13,13 @@
 				th:text="${mensagem}">
 			</div>
 			<div class="alert alert-danger d-flex justify-content-center" th:if="${#lists.isEmpty(lista)}">
-				Nenhuma pontuacao para atualizar no dia
+				Nenhuma pontuaçãoo para atualizar no dia
 			</div>
 
 			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(lista)}">
 				<div class="card-body">
 					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação do <span
-							th:text="${pontuacaoPorGrupo.grupo.nome}"></span></h4>
+							th:text="${#temporals.format(diaDeEvento.data, 'dd/MM/yyyy')}"></span></h4>
 				</div>
 				<div class="card-body">
 					<form method="POST" th:object="${pontuacaoPorGrupo}" th:action="@{statusPresenca/salvar}">

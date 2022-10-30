@@ -34,16 +34,14 @@
 							<tr th:each="diaDeEvento, iterDia: ${pontuacaoPorGrupo.grupo.evento.listaDeDias}">
 								<td th:text="${#temporals.format(diaDeEvento.data, 'dd/MM/yyyy')}"></td>
 								<td class="g6-width-30-porcento">
-									<div class="g6-flex-box-row"
-										th:each="statusPresenca, iterSP : ${pontuacaoPorGrupo.listaStatusPresenca}"
-										th:if="${iterSP.index == 1}">
-										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
-											th:href="@{/evento/ranking/atualizarPontuacaoPresenca?(idStatusPresenca=${statusPresenca.id})}"
-											style="padding: 5px 30px;">Presença</a>
-										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
-											th:href="@{/evento/ranking/listarAtividadesDoDia?(idStatusPresenca=${statusPresenca.id})}"
-											style="padding: 5px 30px;">Atividades</a>
-									</div>
+
+									<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
+										th:href="@{'/evento/ranking/atualizarPontuacaoPresenca?idDiaDeEvento='+${diaDeEvento.id}+'&'+'idPontuacaoPorGrupo='+ ${pontuacaoPorGrupo.id}}"
+										style="padding: 5px 30px;">Presença</a>
+									<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
+										th:href="@{'/evento/ranking/listarAtividadesDoDia?idDiaDeEvento='+${diaDeEvento.id}+'&'+'idPontuacaoPorGrupo='+ ${pontuacaoPorGrupo.id}}"
+										style="padding: 5px 30px;">Atividades</a>
+
 								</td>
 							</tr>
 						</tbody>

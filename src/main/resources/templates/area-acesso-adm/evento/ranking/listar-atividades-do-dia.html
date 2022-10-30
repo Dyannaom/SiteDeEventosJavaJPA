@@ -19,8 +19,8 @@
 
 			<div class="card g6-card-ranking" th:if="${not #lists.isEmpty(statusPresenca.listaStatusAtividade)}">
 				<div class="card-body">
-					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação das atividades do dia<span
-							th:text="${statusPresenca.diaDeEvento.data}"></span></h4>
+					<h4 class="card-title g6-card-title-ranking">Atualizar pontuação das atividades do dia <span
+							th:text="${#temporals.format(statusPresenca.diaDeEvento.data, 'dd/MM/yyyy')}"></span></h4>
 				</div>
 				<div class="card-body">
 					<table class="table table-striped">
@@ -35,7 +35,7 @@
 									<div class="g6-flex-box-row">
 										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
 											style="padding: 5px 30px;" th:text="${statusAtividade.atividade.nome}"
-											th:href="@{/evento/ranking/atualizarPontuacaoAtividades?(idStatusPresenca=${statusPresenca.id})}"></a>
+											th:href="@{'/evento/ranking/atualizarPontuacaoAtividades?idStatusAtividade='+${statusAtividade.id}+'&'+'idPontuacaoPorGrupo='+${pontuacaoPorGrupo.id}}"></a>
 									</div>
 								</td>
 							</tr>

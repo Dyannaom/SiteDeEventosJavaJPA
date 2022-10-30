@@ -1,6 +1,5 @@
 package br.com.gft.services;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 

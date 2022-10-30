@@ -36,14 +36,14 @@ public class PontuacaoPorGrupoService {
 		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
 
 		Integer soma = 0;
-		Integer bonusAuxiliar = evento.get().getDiaDeEvento().size()
+		Integer bonusAuxiliar = evento.get().getListaDeDias().size()
 				* grupo.get().getListaDeParticipantesDoGrupo().size() * 10;
 
 		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
 			soma += participanteEvento1.getPontuacaoPresenca();
 		}
 
-		if (bonusAuxiliar.equals(evento.get().getDiaDeEvento().size() * soma)) {
+		if (bonusAuxiliar.equals(evento.get().getListaDeDias().size() * soma)) {
 			pontuacaoPorGrupo.get().setPontuacaoBonusPresenca(5);
 		}
 
@@ -58,13 +58,13 @@ public class PontuacaoPorGrupoService {
 		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
 
 		Integer soma = 0;
-		Integer bonusAuxiliar = evento.get().getDiaDeEvento().size()
+		Integer bonusAuxiliar = evento.get().getListaDeDias().size()
 				* grupo.get().getListaDeParticipantesDoGrupo().size() * (5 * 2);
 
 		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
 			soma += participanteEvento1.getPontuacaoAtividadeDoEvento();
 		}
-		if (bonusAuxiliar.equals(evento.get().getDiaDeEvento().size() * soma)) {
+		if (bonusAuxiliar.equals(evento.get().getListaDeDias().size() * soma)) {
 			pontuacaoPorGrupo.get().setPontuacaoBonusAtividade(3);
 		}
 
@@ -75,7 +75,6 @@ public class PontuacaoPorGrupoService {
 
 	public Integer pontuacaoFinal(Long id) {
 
-		Optional<Evento> evento = eventoRepository.findById(id);
 		Optional<Grupo> grupo = grupoRepository.findById(id);
 		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
 

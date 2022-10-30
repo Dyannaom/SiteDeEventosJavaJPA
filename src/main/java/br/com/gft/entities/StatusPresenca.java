@@ -76,11 +76,6 @@ public class StatusPresenca {
 	public void setListaStatusAtividade(List<StatusAtividade> listaStatusAtividade) {
 		this.listaStatusAtividade = listaStatusAtividade;
 	}
-	@Override
-	public String toString() {
-		return "StatusPresenca [id=" + id + ", presente=" + presente + ", atrasado=" + atrasado + ", ausente=" + ausente
-				+ "]";
-	}
 	
 	
 	

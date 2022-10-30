@@ -1,5 +1,6 @@
 package br.com.gft.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.gft.entities.Atividade;
+import br.com.gft.entities.Grupo;
 import br.com.gft.entities.ParticipanteEvento;
 import br.com.gft.entities.StatusAtividade;
 import br.com.gft.repositories.ParticipanteEventoRepository;
@@ -48,31 +50,38 @@ public class StatusAtividadeService {
 
 		}
 	}
-	
-	public StatusAtividade obterStatusAtividade(Long id) throws Exception{
+
+	public StatusAtividade obterStatusAtividade(Long id) throws Exception {
 		Optional<StatusAtividade> statusAtividade = statusAtividadeRepository.findById(id);
-		if(statusAtividade.isEmpty())
+		if (statusAtividade.isEmpty())
 			throw new Exception("Status Presença não encontrado");
 		else
 			return statusAtividade.get();
 	}
-	
-	public List<StatusAtividade> obterStatusAtividadePorAtividade(Atividade atividade) {
-		return statusAtividadeRepository.findByAtividade(atividade);
+
+	public List<StatusAtividade> obterStatusAtividadePorAtividadeEPorGrupo(Atividade atividade, Grupo grupo) {
+		List<StatusAtividade> listaStatus = statusAtividadeRepository.findAll();
+		List<StatusAtividade> listaStatusPorAtividadeEPorGrupo = new ArrayList<>();
+		for (StatusAtividade statusAtividade : listaStatus) {
+			if (statusAtividade.getParticipanteEvento().getGrupo().equals(grupo)
+					&& statusAtividade.getAtividade().getId().equals(atividade.getId())) {
+				listaStatusPorAtividadeEPorGrupo.add(statusAtividade);
+			}
+		}
+
+		return listaStatusPorAtividadeEPorGrupo;
 	}
-	
-	public StatusAtividade salvarStatusAtividade(StatusAtividade statusAtividade) {
-		StatusAtividade statusAtividade2 = null;
+
+	public void salvarStatusAtividade(StatusAtividade statusAtividade) {
 		try {
-			statusAtividade2 = obterStatusAtividade(statusAtividade.getId());
+			StatusAtividade statusAtividade2 = obterStatusAtividade(statusAtividade.getId());
+			statusAtividade2.setEntregue(statusAtividade.isEntregue());
+			statusAtividade2.setEntregueAtrasado(statusAtividade.isEntregueAtrasado());
+			statusAtividade2.setNaoEntregue(statusAtividade.isNaoEntregue());
+			statusAtividadeRepository.save(statusAtividade2);
 		} catch (Exception e) {
 		}
-		statusAtividade2.setEntregue(statusAtividade.isEntregue());
-		statusAtividade2.setEntregueAtrasado(statusAtividade.isEntregueAtrasado());
-		statusAtividade2.setNaoEntregue(statusAtividade.isNaoEntregue());
-		
-		return statusAtividadeRepository.save(statusAtividade2);
+
 	}
 
 }
-
