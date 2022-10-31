@@ -244,3 +244,55 @@
 .g6-btn-ranking {
 	width: 48%;
 }
+.g6-align-objects-center-column{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: center;
+}
+.g6-td-sem-borda{
+	border-color: white;
+}
+
+/*Home*/
+.g6-home-conteudo-principal{
+	display: flex;
+	width: 100%;
+	height: 80vh;
+	align-items: center;
+	justify-content: center;
+}
+.g6-btns-home-div{
+	display: flex;
+	width: 50%;
+	justify-content: space-around;
+}
+.g6-btns-home{
+	background-color: var(--corB);
+	width: 48%;
+	height: 45px;
+	color: var(--branco);
+	font-weight: 500;
+	padding: 8px 20px;
+	border-radius: 2px;
+}
+.g6-btns-home:hover{
+	border-color: var(--corB);
+	color: var(--corB);
+	width: 48.5%;
+	height: 46px;
+	transition: 2s;
+}
+/*botões de listar*/
+.g6-btns-listar{
+	background-color: var(--corB);
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--branco);
+	padding: 10px 10px;
+	border-radius: 2px;
+}
+.g6-btns-listar:hover{
+	border-color: var(--corB);
+	color: var(--corB);
+}

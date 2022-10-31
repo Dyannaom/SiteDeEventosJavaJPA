@@ -23,16 +23,11 @@
 							th:text="${#temporals.format(statusPresenca.diaDeEvento.data, 'dd/MM/yyyy')}"></span></h4>
 				</div>
 				<div class="card-body">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th scope="col">Nome: </th>
-							</tr>
-						</thead>
+					<table class="table">
 						<tbody>
 							<tr th:each="statusAtividade: ${statusPresenca.listaStatusAtividade}">
-								<td class="g6-width-30-porcento">
-									<div class="g6-flex-box-row">
+								<td class="g6-width-30-porcento g6-td-sem-borda">
+									<div class="g6-flex-box-row g6-align-objects-center-column">
 										<a class="btn g6-btn-card-forms g6-btn-ranking btn-sm"
 											style="padding: 5px 30px;" th:text="${statusAtividade.atividade.nome}"
 											th:href="@{'/evento/ranking/atualizarPontuacaoAtividades?idDiaDeEvento='+${statusPresenca.diaDeEvento.id}+'&'+'idStatusAtividade='+${statusAtividade.id}+'&'+'idPontuacaoPorGrupo='+${pontuacaoPorGrupo.id}}"></a>

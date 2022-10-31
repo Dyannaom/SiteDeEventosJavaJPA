@@ -5,23 +5,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>Eventos</title>
-
-
 </head>
 
 <body>
-
-
 	<div layout:fragment="content">
-
 		<div th:attr="class='alert alert-'+${cor}+' d-flex justify-content-center'" th:if="${mensagem != null}"
 			th:text="${mensagem}">
 		</div>
-
+		<div class="g6-home-conteudo-principal">
+			<div class="g6-btns-home-div">
+				<a class="btn g6-btns-home" th:href="@{/evento/etapaUm}">Criar Eventos</a>
+				<a class="btn g6-btns-home" th:href="@{/evento}">Listar Eventos</a>
+			</div>
+		</div>
 	</div>
-
-
 </body>
-
 
 </html>

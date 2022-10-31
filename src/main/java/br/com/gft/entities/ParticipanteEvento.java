@@ -29,7 +29,11 @@ public class ParticipanteEvento {
 	private Boolean isAtivo;
 	private Integer pontuacaoPresenca;
 	private Integer pontuacaoAtividadeDoEvento;
-
+	
+	public ParticipanteEvento() {
+		this.pontuacaoPresenca = 0;
+		this.pontuacaoAtividadeDoEvento = 0;
+	}
 	
 	public Long getId() {
 		return id;

@@ -98,11 +98,45 @@ public class RankingController {
 
 	@RequestMapping(method = RequestMethod.POST, path = "statusPresenca/salvar")
 	public ModelAndView salvarStatusPresenca(PontuacaoPorGrupo pontuacaoPorGrupo, RedirectAttributes ra) {
-		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-presenca.html");
 
-		for (StatusPresenca statusPresenca : pontuacaoPorGrupo.getListaStatusPresenca()) {
-			statusPresencaService.salvarStatusPresenca(statusPresenca);
+		ModelAndView mv;
+
+		List<StatusPresenca> listaStatusPresenca = pontuacaoPorGrupo.getListaStatusPresenca();
+
+		DiaDeEvento diaDeEvento = statusPresencaService.pegarDiaDeEventoDeStatusPresenca(listaStatusPresenca);
+
+		if (statusPresencaService.verificarSeAlgumStatusPresencaEstaPresenteEAusente(listaStatusPresenca)) {
+
+			mv = new ModelAndView("redirect:/evento/ranking/atualizarPontuacaoPresenca?" + "idDiaDeEvento="
+					+ diaDeEvento.getId() + "&" + "idPontuacaoPorGrupo="
+					+ pontuacaoPorGrupo.getId());
+			ra.addFlashAttribute("mensagem", "Não é possivel o participante estar ausente e presente!");
+			ra.addFlashAttribute("cor", "danger");
+
+		} else {
+			boolean atrasado = false;
+			
+			mv = new ModelAndView("redirect:/evento/ranking/atualizarPontuacaoGrupo?&" 
+					+ "idPontuacaoPorGrupo=" + pontuacaoPorGrupo.getId());
+					ra.addFlashAttribute("mensagem", "Atualização feita com sucesso!");
+					ra.addFlashAttribute("cor", "success");
+
+			for (StatusPresenca statusPresenca : listaStatusPresenca) {
+				atrasado = statusPresenca.isAtrasado();
+
+				if (atrasado) {
+					statusPresenca.setPresente(true);
+					statusPresenca.isPresente();
+				}
+
+				if (statusPresenca.getParticipanteEvento().getId() != null) {
+					statusPresencaService.salvarStatusPresenca(statusPresenca);
+
+				}
+			}
+
 		}
+
 		return mv;
 	}
 
@@ -132,12 +166,13 @@ public class RankingController {
 			DiaDeEvento diaDeEvento = diaDeEventoService.obterDiaDeEvento(idDiaDeEvento);
 			Atividade atividade = statusAtividade.getAtividade();
 			PontuacaoPorGrupo pontuacaoPorGrupo = pontuacaoPorGrupoService.obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
-			
+
 			List<StatusAtividade> listaStatusAtividade = statusAtividadeService
 					.listarStatusAtividadePorDiaDeEventoEPorAtividadeEPorPontuacaoPorGrupo(diaDeEvento, atividade,
 							pontuacaoPorGrupo);
-			List<StatusPresenca> listaStatusPresenca = statusPresencaService.obterListaStatusPresencaPorListaStatusAtividade(listaStatusAtividade);
-			
+			List<StatusPresenca> listaStatusPresenca = statusPresencaService
+					.obterListaStatusPresencaPorListaStatusAtividade(listaStatusAtividade);
+
 			pontuacaoPorGrupo.setListaStatusPresenca(listaStatusPresenca);
 
 			if (!listaStatusPresenca.isEmpty()) {
@@ -157,15 +192,49 @@ public class RankingController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "statusAtividade/salvar")
-	public ModelAndView salvarStatusAtividade(PontuacaoPorGrupo pontuacaoPorGrupo) {
+	public ModelAndView salvarStatusAtividade(PontuacaoPorGrupo pontuacaoPorGrupo, RedirectAttributes ra) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/ranking/pagina-de-marcacao-de-atividades.html");
-		for (StatusPresenca statusPresenca : pontuacaoPorGrupo.getListaStatusPresenca()) {
-			for (StatusAtividade statusAtividade : statusPresenca.getListaStatusAtividade()) {
-				if (statusAtividade.getStatusPresenca() != null) {
-					statusAtividadeService.salvarStatusAtividade(statusAtividade);
+		
+		List<StatusPresenca> listaStatusPresenca = pontuacaoPorGrupo.getListaStatusPresenca();
+		
+		DiaDeEvento diaDeEvento = statusPresencaService.pegarDiaDeEventoDeStatusPresenca(listaStatusPresenca);
+		Long idStatusAtividade = statusAtividadeService.pegarStatusAtividadeDeUmaLista(listaStatusPresenca).getId();
+		
+		if(statusAtividadeService.verificarSeAlgumStatusAtividadeEstaEntregueENaoEntregue(listaStatusPresenca)) {
+			
+			mv = new ModelAndView("redirect:/evento/ranking/atualizarPontuacaoAtividades?" 
+					+ "idDiaDeEvento=" + diaDeEvento.getId() + "&" 
+					+ "idStatusAtividade=" +  idStatusAtividade + "&" 
+					+ "idPontuacaoPorGrupo=" + pontuacaoPorGrupo.getId());
+			ra.addFlashAttribute("mensagem", "Não é possivel o participante ter entregue e não entregue a atividade!");
+			ra.addFlashAttribute("cor", "danger");
+			
+		} else {
+			mv = new ModelAndView("redirect:/evento/ranking/listarAtividadesDoDia?"
+					+ "idDiaDeEvento=" + diaDeEvento.getId() + "&"
+					+ "idPontuacaoPorGrupo=" + pontuacaoPorGrupo.getId());
+					
+			boolean entregueAtrasado = false;
+			
+			for (StatusPresenca statusPresenca : listaStatusPresenca) {
+				for (StatusAtividade statusAtividade : statusPresenca.getListaStatusAtividade()) {
+					entregueAtrasado = statusAtividade.isEntregueAtrasado();
+					
+					if(entregueAtrasado) {
+						statusAtividade.setEntregue(true);
+					}
+					
+					if (statusAtividade.getStatusPresenca() != null) {
+						statusAtividadeService.salvarStatusAtividade(statusAtividade);
+					}
 				}
 			}
+			ra.addFlashAttribute("mensagem", "Atualização feita com sucesso!");
+			ra.addFlashAttribute("cor", "success");
+			
 		}
+		
+		
 		return mv;
 	}
 

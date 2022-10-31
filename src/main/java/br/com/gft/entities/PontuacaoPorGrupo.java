@@ -26,6 +26,12 @@ public class PontuacaoPorGrupo {
 	private Integer pontuacaoBonusPresenca;
 	private Integer pontuacaoFinal;
 	
+	public PontuacaoPorGrupo() {
+		super();
+		this.pontuacaoBonusAtividade = 0;
+		this.pontuacaoBonusPresenca = 0;
+		this.pontuacaoFinal = 0;
+	}
 
 	public Long getId() {
 		return id;

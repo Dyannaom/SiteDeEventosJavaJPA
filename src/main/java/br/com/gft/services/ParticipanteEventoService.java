@@ -55,7 +55,6 @@ public class ParticipanteEventoService {
 	}
 	
 	public List<ParticipanteEvento> listarParticipantesDoEvento() {
-		
 		return participanteEventoRepository.findAll();
 	}
 	

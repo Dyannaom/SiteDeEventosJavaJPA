@@ -74,7 +74,7 @@ public class StatusPresencaService {
 
 	public List<StatusPresenca> obterListaStatusPresencaPorListaStatusAtividade(
 			List<StatusAtividade> listarStatusAtividadeGeral) {
-		
+
 		List<StatusAtividade> listaStatusAtividade = null;
 		List<StatusPresenca> listaStatusPresenca = new ArrayList<>();
 		for (StatusAtividade statusAtividade : listarStatusAtividadeGeral) {
@@ -86,5 +86,41 @@ public class StatusPresencaService {
 		}
 
 		return listaStatusPresenca;
+	}
+
+	public boolean verificarSeAlgumStatusPresencaEstaPresenteEAusente(List<StatusPresenca> listaStausPresenca) {
+		boolean presente = false;
+		boolean atrasado = false;
+		boolean ausente = false;
+		
+		boolean resultado = false;
+
+		for (StatusPresenca statusPresenca : listaStausPresenca) {
+			presente = statusPresenca.isPresente();
+			atrasado = statusPresenca.isAtrasado();
+			ausente = statusPresenca.isAusente();
+
+			if (atrasado) {
+				statusPresenca.setPresente(true);
+				presente = statusPresenca.isPresente();
+			}
+
+			if (presente && ausente) {
+				resultado = true;
+			} else {
+				if(!resultado)
+					resultado = false;
+			}
+		}
+		
+		return resultado;
+	}
+	
+	public DiaDeEvento pegarDiaDeEventoDeStatusPresenca(List<StatusPresenca> listaStausPresenca) {
+		DiaDeEvento diaDeEvento = null;
+		for(StatusPresenca statusPresenca: listaStausPresenca) {
+			diaDeEvento = statusPresenca.getDiaDeEvento();
+		}
+		return diaDeEvento;
 	}
 }

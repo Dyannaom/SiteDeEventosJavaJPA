@@ -12,6 +12,7 @@ import br.com.gft.entities.DiaDeEvento;
 import br.com.gft.entities.ParticipanteEvento;
 import br.com.gft.entities.PontuacaoPorGrupo;
 import br.com.gft.entities.StatusAtividade;
+import br.com.gft.entities.StatusPresenca;
 import br.com.gft.repositories.ParticipanteEventoRepository;
 import br.com.gft.repositories.PontuacaoPorGrupoRepository;
 import br.com.gft.repositories.StatusAtividadeRepository;
@@ -93,6 +94,50 @@ public class StatusAtividadeService {
 		} catch (Exception e) {
 		}
 
+	}
+	
+	public boolean verificarSeAlgumStatusAtividadeEstaEntregueENaoEntregue(List<StatusPresenca> listaStatusPresenca) {
+		
+		boolean entregue = false;
+		boolean naoEntregue = false;
+		boolean entregueAtrasado = false;
+		
+		boolean resultado = false;
+		
+		for (StatusPresenca statusPresenca : listaStatusPresenca) {
+			for (StatusAtividade statusAtividade : statusPresenca.getListaStatusAtividade()) {
+				
+				entregue = statusAtividade.isEntregue();
+				naoEntregue = statusAtividade.isNaoEntregue();
+				entregueAtrasado = statusAtividade.isEntregueAtrasado();
+				
+				if(entregueAtrasado) {
+					statusAtividade.setEntregue(true);
+					entregue = statusAtividade.isEntregue();
+				}
+				
+				if(entregue && naoEntregue) {
+					resultado = true;
+				} else {
+					if(!resultado)
+						resultado = false;
+				}
+				
+			}
+		}
+		
+		return resultado;
+		
+	}
+	
+	public StatusAtividade pegarStatusAtividadeDeUmaLista(List<StatusPresenca> listaStatusPresenca) {
+		StatusAtividade statusAtividade = null;
+		for (StatusPresenca statusPresenca : listaStatusPresenca) {
+			for (StatusAtividade statusAtividade2 : statusPresenca.getListaStatusAtividade()) {
+				statusAtividade = statusAtividade2;
+			}
+		}
+		return statusAtividade;
 	}
 
 }

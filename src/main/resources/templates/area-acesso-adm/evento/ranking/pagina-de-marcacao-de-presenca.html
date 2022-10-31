@@ -45,12 +45,15 @@
 										th:field="*{listaStatusPresenca[__${iter.index}__].diaDeEvento}">
 									<input type="hidden"
 										th:field="*{listaStatusPresenca[__${iter.index}__].listaStatusAtividade}">
+									<input type="hidden"
+										th:field="*{listaStatusPresenca[__${iter.index}__].pontuacaoPorGrupo}">
 
-									<td th:text="${statusPresenca.participanteEvento.nome}"></td>
+									<td th:text="*{listaStatusPresenca[__${iter.index}__].participanteEvento.nome}"></td>
 									<td>
-										<input class="form-check" type="checkbox"
-											th:field="*{listaStatusPresenca[__${iter.index}__].presente}" />
-
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												th:field="*{listaStatusPresenca[__${iter.index}__].presente}" />
+										</div>
 									</td>
 									<td>
 										<div class="form-check">

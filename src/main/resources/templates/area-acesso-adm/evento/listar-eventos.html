@@ -38,9 +38,9 @@
 							</td>
 							<td th:text="${#lists.size(evento.listaDeGruposDoEvento)}"></td>
 							<td>
-								<a class="btn btn-secondary btn-sm" th:href="@{/evento/detalharEvento?(id=${evento.id})}"
+								<a class="btn g6-btns-listar" th:href="@{/evento/detalharEvento?(id=${evento.id})}"
 									style="padding: 5px 30px;" >Detalhes do Evento </a>
-								<a class="btn btn-secondary btn-sm"
+								<a class="btn g6-btns-listar"
 									style="padding: 5px 30px;" th:href="@{/evento/ranking?(id=${evento.id})}">Ranking Evento </a>
 
 							</td>
