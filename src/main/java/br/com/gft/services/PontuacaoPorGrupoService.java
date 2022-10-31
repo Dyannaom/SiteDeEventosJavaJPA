@@ -1,5 +1,6 @@
 package br.com.gft.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import br.com.gft.entities.Evento;
 import br.com.gft.entities.Grupo;
 import br.com.gft.entities.ParticipanteEvento;
 import br.com.gft.entities.PontuacaoPorGrupo;
+import br.com.gft.entities.StatusAtividade;
+import br.com.gft.entities.StatusPresenca;
 import br.com.gft.repositories.EventoRepository;
 import br.com.gft.repositories.GrupoRepository;
 import br.com.gft.repositories.ParticipanteEventoRepository;
@@ -28,70 +31,125 @@ public class PontuacaoPorGrupoService {
 	GrupoRepository grupoRepository;
 	@Autowired
 	RankingRepository rankingRepository;
+	@Autowired
+	StatusPresencaService statusPresencaService;
+	@Autowired
+	StatusAtividadeService statusAtividadeService;
 
-	public Integer conferirBonusPresenca(Long id) {
+	private void conferirBonusPresenca(Long idPontuacaoGrupo) throws Exception{
 
-		Optional<Evento> evento = eventoRepository.findById(id);
-		Optional<Grupo> grupo = grupoRepository.findById(id);
-		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
+		PontuacaoPorGrupo pontuacaoPorGrupo = obterPontuacaoPorGrupo(idPontuacaoGrupo);
+		Grupo grupo = pontuacaoPorGrupo.getGrupo();
+		Evento evento= pontuacaoPorGrupo.getRanking().getEvento();
 
-		Integer soma = 0;
-		Integer bonusAuxiliar = evento.get().getListaDeDias().size()
-				* grupo.get().getListaDeParticipantesDoGrupo().size() * 10;
+		int soma = 0;
+		int bonusAuxiliar = evento.getListaDeDias().size()
+				* grupo.getListaDeParticipantesDoGrupo().size() * 10;
 
-		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
+		for (ParticipanteEvento participanteEvento1 : grupo.getListaDeParticipantesDoGrupo()) {
 			soma += participanteEvento1.getPontuacaoPresenca();
 		}
 
-		if (bonusAuxiliar.equals(evento.get().getListaDeDias().size() * soma)) {
-			pontuacaoPorGrupo.get().setPontuacaoBonusPresenca(5);
+		if (bonusAuxiliar == evento.getListaDeDias().size() * soma) {
+			pontuacaoPorGrupo.setPontuacaoBonusPresenca(5);
+		}else {
+			pontuacaoPorGrupo.setPontuacaoBonusPresenca(0);
 		}
 
-		return pontuacaoPorGrupo.get().getPontuacaoBonusPresenca();
-
+		salvarPontuacaoPorGrupo(pontuacaoPorGrupo);
 	}
 
-	public Integer conferirBonusAtividade(Long id) {
+	private void conferirBonusAtividade(Long idPontuacaoGrupo) throws Exception{
 
-		Optional<Evento> evento = eventoRepository.findById(id);
-		Optional<Grupo> grupo = grupoRepository.findById(id);
-		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
+		PontuacaoPorGrupo pontuacaoPorGrupo = obterPontuacaoPorGrupo(idPontuacaoGrupo);
+		Grupo grupo = pontuacaoPorGrupo.getGrupo();
+		Evento evento= pontuacaoPorGrupo.getRanking().getEvento();
 
-		Integer soma = 0;
-		Integer bonusAuxiliar = evento.get().getListaDeDias().size()
-				* grupo.get().getListaDeParticipantesDoGrupo().size() * (5 * 2);
+		int soma = 0;
+		int bonusAuxiliar = evento.getListaDeDias().size()
+				* grupo.getListaDeParticipantesDoGrupo().size() * (5 * 2);
 
-		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
+		for (ParticipanteEvento participanteEvento1 : grupo.getListaDeParticipantesDoGrupo()) {
 			soma += participanteEvento1.getPontuacaoAtividadeDoEvento();
 		}
-		if (bonusAuxiliar.equals(evento.get().getListaDeDias().size() * soma)) {
-			pontuacaoPorGrupo.get().setPontuacaoBonusAtividade(3);
+		if (bonusAuxiliar == evento.getListaDeDias().size() * soma) {
+			pontuacaoPorGrupo.setPontuacaoBonusAtividade(3);
+		}else {
+			pontuacaoPorGrupo.setPontuacaoBonusAtividade(0);
 		}
-
-		return pontuacaoPorGrupo.get().getPontuacaoBonusAtividade();
+		salvarPontuacaoPorGrupo(pontuacaoPorGrupo);
 
 	}
 
+	private void atualizarPontuacaoPresencaParticipante(Long idPontuacaoPorGrupo) throws Exception{
+		PontuacaoPorGrupo pontuacaoPorGrupo = obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
+		List<ParticipanteEvento> listaDeParticipantes = pontuacaoPorGrupo.getGrupo().getListaDeParticipantesDoGrupo();
+		
+		for(ParticipanteEvento participante :listaDeParticipantes) {
+			for (StatusPresenca statusPresenca : participante.getListaStatusPresenca()) {
+				participante.setPontuacaoPresenca(0);
 
-	public Integer pontuacaoFinal(Long id) {
+				if(statusPresenca.isPresente()) {
+					participante.setPontuacaoPresenca(participante.getPontuacaoPresenca()+10);
+				}
+				if(statusPresenca.isAtrasado()) {
+					participante.setPontuacaoPresenca(participante.getPontuacaoPresenca()-2);
+				}
+				
+				participanteEventoRepository.save(participante);	
+			}
+		}
+		
+		
+	}
+	
+	private void atualizarPontuacaoEntregaDeAtividadeParticipante(Long idPontuacaoPorGrupo) throws Exception{
+		
+		PontuacaoPorGrupo pontuacaoPorGrupo = obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
+		List<ParticipanteEvento> listaDeParticipantes = pontuacaoPorGrupo.getGrupo().getListaDeParticipantesDoGrupo();
+		
+		for(ParticipanteEvento participante :listaDeParticipantes) {
+			for (StatusPresenca statusPresenca : participante.getListaStatusPresenca()) {
+				participante.setPontuacaoAtividadeDoEvento(0);
+				for (StatusAtividade statusAtividade : statusPresenca.getListaStatusAtividade()) {
+					if(statusAtividade.isEntregue()) {
+						participante.setPontuacaoAtividadeDoEvento(participante.getPontuacaoAtividadeDoEvento()+5);
+					}
+					if(statusAtividade.isEntregueAtrasado()) {
+						participante.setPontuacaoAtividadeDoEvento(participante.getPontuacaoAtividadeDoEvento()-2);
+					}
+					
+					participanteEventoRepository.save(participante);
+				}
+			}
+		}
+		
+		
+	}
 
-		Optional<Grupo> grupo = grupoRepository.findById(id);
-		Optional<PontuacaoPorGrupo> pontuacaoPorGrupo = pontuacaoPorGrupoRepository.findById(id);
+	public void atualizarPontuacaoFinal(Long idPontuacaoPorGrupo) throws Exception{
+		
+		PontuacaoPorGrupo pontuacaoPorGrupo = obterPontuacaoPorGrupo(idPontuacaoPorGrupo);
+		Grupo grupo = pontuacaoPorGrupo.getGrupo();
+		
+		atualizarPontuacaoPresencaParticipante(pontuacaoPorGrupo.getId());
+		atualizarPontuacaoEntregaDeAtividadeParticipante(pontuacaoPorGrupo.getId());
+		conferirBonusPresenca(pontuacaoPorGrupo.getId());
+		conferirBonusAtividade(pontuacaoPorGrupo.getId());
 
-		Integer somaPresenca = 0;
-		Integer somaAtividade = 0;
+		int somaPresenca = 0;
+		int somaAtividade = 0;
 
-		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
+		for (ParticipanteEvento participanteEvento1 : grupo.getListaDeParticipantesDoGrupo()) {
 			somaPresenca += participanteEvento1.getPontuacaoPresenca();
 		}
-		for (ParticipanteEvento participanteEvento1 : grupo.get().getListaDeParticipantesDoGrupo()) {
+		for (ParticipanteEvento participanteEvento1 : grupo.getListaDeParticipantesDoGrupo()) {
 			somaAtividade += participanteEvento1.getPontuacaoAtividadeDoEvento();
 		}
 
-		pontuacaoPorGrupo.get().setPontuacaoFinal(pontuacaoPorGrupo.get().getPontuacaoBonusAtividade()
-				+ pontuacaoPorGrupo.get().getPontuacaoBonusPresenca() + somaPresenca + somaAtividade);
-
-		return pontuacaoPorGrupo.get().getPontuacaoFinal();
+		pontuacaoPorGrupo.setPontuacaoFinal(pontuacaoPorGrupo.getPontuacaoBonusAtividade()
+				+ pontuacaoPorGrupo.getPontuacaoBonusPresenca() + somaPresenca + somaAtividade);
+		salvarPontuacaoPorGrupo(pontuacaoPorGrupo);
 
 	}
 

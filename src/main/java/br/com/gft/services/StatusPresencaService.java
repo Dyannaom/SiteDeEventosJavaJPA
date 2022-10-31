@@ -71,6 +71,10 @@ public class StatusPresencaService {
 
 		}
 	}
+	public void saveStatusPresenca(StatusPresenca statusPresenca) {
+		statusPresencaRepository.save(statusPresenca);
+	}
+	
 
 	public List<StatusPresenca> obterListaStatusPresencaPorListaStatusAtividade(
 			List<StatusAtividade> listarStatusAtividadeGeral) {

@@ -38,7 +38,7 @@
 
 						<div class="form-group mb-3">
 							<label for="dataInicio">Data Início: <span class="color-red">*</span>
-							</label> <input class="form-control" type="date" th:field="*{dataInicio}"></input>
+							</label> <input class="form-control" type="date" th:field="*{dataInicio}" required></input>
 							<div class="text-danger" th:if="${#fields.hasErrors('dataInicio')}"
 								th:errors="*{dataInicio}">
 							</div>
@@ -46,7 +46,7 @@
 
 						<div class="form-group mb-3">
 							<label for="dataFinal">Data Final: <span class="color-red">*</span>
-							</label> <input class="form-control" type="date" th:field="*{dataFinal}"></input>
+							</label> <input class="form-control" type="date" th:field="*{dataFinal}" required></input>
 							<div class="text-danger" th:if="${#fields.hasErrors('dataFinal')}" th:errors="*{dataFinal}">
 							</div>
 						</div>

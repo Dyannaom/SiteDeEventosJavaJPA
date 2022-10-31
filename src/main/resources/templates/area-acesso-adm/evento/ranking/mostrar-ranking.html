@@ -13,30 +13,73 @@
 				th:text="${mensagem}">
 			</div>
 
-			<div class="card g6-card-ranking">
+			<div class="card g6-card-ranking mb-3">
 				<div class="card-body">
-					<h4 class="card-title g6-card-title-ranking">Atualizar Ranking de <span th:text="${evento.nome}"></span></h4>
+					<h4 class="card-title g6-card-title-ranking">Atualizar Ranking de <span
+							th:text="${evento.nome}"></span></h4>
 				</div>
-				<div class="card-body" th:if="${not #lists.isEmpty(ranking.pontuacaoPorGrupo)}">
+				<div class="card-body" th:if="${not #lists.isEmpty(lista)}">
 					<table class="table table-striped">
 						<thead>
 							<tr>
+								<th scope="col">Posição: </th>
 								<th scope="col">Grupo </th>
 								<th scope="col">Pontuação</th>
 								<th scope="col">Opções</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="pontuacaoPorGrupo: ${ranking.pontuacaoPorGrupo}">
+							<tr th:each="pontuacaoPorGrupo, iter : ${lista}">
+								<td class="g6-negrito">#<span th:text="${iter.index+1}"></span></td>
 								<td th:text="${pontuacaoPorGrupo.grupo.nome}"></td>
 								<td th:text="${pontuacaoPorGrupo.pontuacaoFinal}"></td>
 								<td class="g6-width-30-porcento">
-									<a class="btn g6-btn-card-forms btn-sm"
-										style="padding: 5px 30px;" th:href="@{/evento/ranking/atualizarPontuacaoGrupo?(idPontuacaoPorGrupo=${pontuacaoPorGrupo.id})}">Atualizar Pontuação do grupo</a>
+									<a class="btn g6-btn-card-forms btn-sm" style="padding: 5px 30px;"
+										th:href="@{/evento/ranking/atualizarPontuacaoGrupo?(idPontuacaoPorGrupo=${pontuacaoPorGrupo.id})}">Atualizar
+										Pontuação do grupo</a>
 								</td>
 							</tr>
 						</tbody>
 					</table>
+				</div>
+			</div>
+			<div class="g6-div-criterios-de-avaliacao">
+				<div class="card g6-card-criterios-de-avaliacao mb-3">
+					<div class="card-head">
+						<h5 class="card-title">Critérios de Pontuação</h5>
+					</div>
+					<div class="card-body">
+						<table class="table table-striped table-sm g6-tabela-criterios-de-avaliacao">
+							<thead>
+								<tr>
+									<th scope="col">Critério</th>
+									<th scope="col">Pontuação Por Grupo</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Presença</td>
+									<td>10</td>
+								</tr>
+								<tr>
+									<td>Atividade</td>
+									<td>5</td>
+								</tr>
+								<tr>
+									<td>Atraso</th>
+									<td>-2</td>
+								</tr>
+								<tr>
+									<td>Bônus 100% Presença</td>
+									<td>5</td>
+								</tr>
+								<tr>
+									<td>Bônus 100% Atividade</td>
+									<td>3</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>

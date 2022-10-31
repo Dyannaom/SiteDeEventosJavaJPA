@@ -19,17 +19,13 @@ public class Grupo {
 	private Long id;
 	@NotEmpty(message = "Nome não pode ser vazio")
 	private String nome;
-	private Integer quantidadeDePessoas;
+	private int quantidadeDePessoas;
 	@OneToMany(mappedBy = "grupo")
 	private List<ParticipanteEvento> listaDeParticipantesDoGrupo;
 	@ManyToOne
 	private Evento evento;
 	@OneToOne(mappedBy= "grupo")
 	private PontuacaoPorGrupo pontuacaoPorGrupo;
-	
-	public Grupo() {
-		this.quantidadeDePessoas = 0;
-	}
 	
 	public Long getId() {
 		return id;
@@ -43,11 +39,11 @@ public class Grupo {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public Integer getQuantidadeDePessoas() {
+	public int getQuantidadeDePessoas() {
 		return quantidadeDePessoas;
 	}
-	public void setQuantidadeDePessoas(Integer quantidadeParticipantes) {
-		this.quantidadeDePessoas = quantidadeParticipantes;
+	public void setQuantidadeDePessoas(int quantidadeDePessoas) {
+		this.quantidadeDePessoas = quantidadeDePessoas;
 	}
 	public List<ParticipanteEvento> getListaDeParticipantesDoGrupo() {
 		return listaDeParticipantesDoGrupo;
@@ -61,13 +57,13 @@ public class Grupo {
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
-
 	public PontuacaoPorGrupo getPontuacaoPorGrupo() {
 		return pontuacaoPorGrupo;
 	}
-
 	public void setPontuacaoPorGrupo(PontuacaoPorGrupo pontuacaoPorGrupo) {
 		this.pontuacaoPorGrupo = pontuacaoPorGrupo;
 	}
+	
+	
 	
 }

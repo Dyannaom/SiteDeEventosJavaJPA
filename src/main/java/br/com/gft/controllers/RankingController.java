@@ -19,6 +19,7 @@ import br.com.gft.entities.StatusPresenca;
 import br.com.gft.services.DiaDeEventoService;
 import br.com.gft.services.EventoService;
 import br.com.gft.services.PontuacaoPorGrupoService;
+import br.com.gft.services.RankingService;
 import br.com.gft.services.StatusAtividadeService;
 import br.com.gft.services.StatusPresencaService;
 
@@ -36,6 +37,8 @@ public class RankingController {
 	StatusPresencaService statusPresencaService;
 	@Autowired
 	DiaDeEventoService diaDeEventoService;
+	@Autowired
+	RankingService rankingService;
 
 	@RequestMapping
 	private ModelAndView mostrarRanking(@RequestParam Long id) {
@@ -45,7 +48,7 @@ public class RankingController {
 			mv = new ModelAndView("area-acesso-adm/evento/ranking/mostrar-ranking.html");
 			Evento evento = eventoService.obterEvento(id);
 			mv.addObject("evento", evento);
-			mv.addObject("ranking", evento.getRanking());
+			mv.addObject("lista", rankingService.ordemDaPontuacaoPorGrupo(evento.getRanking()));
 		} catch (Exception e) {
 			mv = new ModelAndView("/evento");
 			mv.addObject("mensagem", e.getMessage());
@@ -133,6 +136,13 @@ public class RankingController {
 					statusPresencaService.salvarStatusPresenca(statusPresenca);
 
 				}
+			}
+			
+			try{
+				pontuacaoPorGrupoService.atualizarPontuacaoFinal(pontuacaoPorGrupo.getId());
+			} catch(Exception e) {
+				ra.addFlashAttribute("mensagem", "Não foi possível atualizar pontuação final!");
+				ra.addFlashAttribute("cor", "danger");
 			}
 
 		}
@@ -232,6 +242,12 @@ public class RankingController {
 			ra.addFlashAttribute("mensagem", "Atualização feita com sucesso!");
 			ra.addFlashAttribute("cor", "success");
 			
+			try{
+				pontuacaoPorGrupoService.atualizarPontuacaoFinal(pontuacaoPorGrupo.getId());
+			} catch(Exception e) {
+				ra.addFlashAttribute("mensagem", "Não foi possível atualizar pontuação final!");
+				ra.addFlashAttribute("cor", "danger");
+			}
 		}
 		
 		

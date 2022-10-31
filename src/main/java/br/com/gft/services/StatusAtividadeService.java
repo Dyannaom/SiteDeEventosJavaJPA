@@ -95,6 +95,7 @@ public class StatusAtividadeService {
 		}
 
 	}
+
 	
 	public boolean verificarSeAlgumStatusAtividadeEstaEntregueENaoEntregue(List<StatusPresenca> listaStatusPresenca) {
 		

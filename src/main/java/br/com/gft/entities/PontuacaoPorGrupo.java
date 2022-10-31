@@ -22,9 +22,9 @@ public class PontuacaoPorGrupo {
 	private Ranking ranking;
 	@OneToMany(mappedBy="pontuacaoPorGrupo")
 	private List<StatusPresenca> listaStatusPresenca;
-	private Integer pontuacaoBonusAtividade;
-	private Integer pontuacaoBonusPresenca;
-	private Integer pontuacaoFinal;
+	private int pontuacaoBonusAtividade;
+	private int pontuacaoBonusPresenca;
+	private int pontuacaoFinal;
 	
 	public PontuacaoPorGrupo() {
 		super();
@@ -49,30 +49,6 @@ public class PontuacaoPorGrupo {
 		this.grupo = grupo;
 	}
 
-	public int getPontuacaoBonusAtividade() {
-		return pontuacaoBonusAtividade;
-	}
-
-	public void setPontuacaoBonusAtividade(Integer pontuacaoBonusAtividade) {
-		this.pontuacaoBonusAtividade = pontuacaoBonusAtividade;
-	}
-
-	public Integer getPontuacaoBonusPresenca() {
-		return pontuacaoBonusPresenca;
-	}
-
-	public void setPontuacaoBonusPresenca(Integer pontuacaoBonusPresenca) {
-		this.pontuacaoBonusPresenca = pontuacaoBonusPresenca;
-	}
-
-	public Integer getPontuacaoFinal() {
-		return pontuacaoFinal;
-	}
-
-	public void setPontuacaoFinal(Integer pontuacaoFinal) {
-		this.pontuacaoFinal = pontuacaoFinal;
-	}
-
 	public Ranking getRanking() {
 		return ranking;
 	}
@@ -89,16 +65,29 @@ public class PontuacaoPorGrupo {
 		this.listaStatusPresenca = listaStatusPresenca;
 	}
 
-	@Override
-	public String toString() {
-		return "PontuacaoPorGrupo [id=" + id + ", grupo=" + grupo + ", ranking=" + ranking + ", listaStatusPresenca="
-				+ listaStatusPresenca + ", pontuacaoBonusAtividade=" + pontuacaoBonusAtividade
-				+ ", pontuacaoBonusPresenca=" + pontuacaoBonusPresenca + ", pontuacaoFinal=" + pontuacaoFinal + "]";
+	public int getPontuacaoBonusAtividade() {
+		return pontuacaoBonusAtividade;
 	}
-	
-	
-	
 
+	public void setPontuacaoBonusAtividade(int pontuacaoBonusAtividade) {
+		this.pontuacaoBonusAtividade = pontuacaoBonusAtividade;
+	}
+
+	public int getPontuacaoBonusPresenca() {
+		return pontuacaoBonusPresenca;
+	}
+
+	public void setPontuacaoBonusPresenca(int pontuacaoBonusPresenca) {
+		this.pontuacaoBonusPresenca = pontuacaoBonusPresenca;
+	}
+
+	public int getPontuacaoFinal() {
+		return pontuacaoFinal;
+	}
+
+	public void setPontuacaoFinal(int pontuacaoFinal) {
+		this.pontuacaoFinal = pontuacaoFinal;
+	}
 
 }
 

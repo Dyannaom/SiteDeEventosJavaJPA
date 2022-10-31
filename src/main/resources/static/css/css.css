@@ -296,3 +296,30 @@
 	border-color: var(--corB);
 	color: var(--corB);
 }
+/*listar eventos*/
+.g6-negrito {
+	font-weight: 500;
+}
+.g6-div-criterios-de-avaliacao{
+	width: 100%;
+	height: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.g6-card-criterios-de-avaliacao {
+	width: 60%;
+	align-items: center;
+	justify-items: center;
+	
+}
+
+.g6-card-criterios-de-avaliacao .card-title{
+	color:var(--corA);
+	margin-top: 10px;
+}
+
+.g6-card-criterios-de-avaliacao .card-body {
+	width: 95%;
+}
