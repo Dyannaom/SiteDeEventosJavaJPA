@@ -3,6 +3,7 @@ package br.com.gft.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,7 +59,8 @@ public class GrupoController {
 		return mv;
 	}*/
 	
-	@RequestMapping(method = RequestMethod.POST, path = "salvar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.POST, path = "/salvar")
 	public ModelAndView salvarGrupo(@Valid Grupo grupo, BindingResult bindingResult,
 			RedirectAttributes ra) {
 		ModelAndView mv;
@@ -75,6 +77,7 @@ public class GrupoController {
 		return mv;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(method = RequestMethod.GET, path = "")
 	public ModelAndView listarGrupos() {
 		ModelAndView mv = new ModelAndView("/grupo/listGrupo.html");
@@ -88,7 +91,8 @@ public class GrupoController {
 		return mv;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "excluir")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/excluir")
 	public ModelAndView excluirGrupo(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 		ModelAndView mv = new ModelAndView("redirect:/grupo");
 		try {

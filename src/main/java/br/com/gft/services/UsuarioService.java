@@ -2,18 +2,29 @@ package br.com.gft.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.gft.entities.Usuario;
 import br.com.gft.repositories.UsuarioRepository;
 
 @Service
-public class UsuarioService {
+@Transactional
+public class UsuarioService implements UserDetailsService {
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	final UsuarioRepository usuarioRepository;
+	
+	public UsuarioService(UsuarioRepository usuarioRepository) {
+		this.usuarioRepository = usuarioRepository;
+	}
+	
+	
+	
 
 	public Usuario salvarUsuario(Usuario usuario) {
 		return usuarioRepository.save(usuario);
@@ -23,7 +34,7 @@ public class UsuarioService {
 		return usuarioRepository.findAll();
 	}
 
-	public Usuario obterUsuario(Long id) throws Exception {
+	public Usuario obterUsuario(UUID id) throws Exception {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		if (usuario.isEmpty())
 			throw new Exception("Usuario não encontrado!");
@@ -31,7 +42,7 @@ public class UsuarioService {
 			return usuario.get();
 	}
 
-	public void deletarUsuario(Long id) throws Exception {
+	public void deletarUsuario(UUID id) throws Exception {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		if (usuario.isEmpty())
 			throw new Exception("Usuario não encontrado!");
@@ -51,12 +62,15 @@ public class UsuarioService {
 		return usuarioRepository.findByQuatroLetras(quatroLetras);
 	}
 
-	public Optional<Usuario> verificarSeUsuarioComEsseEmailJaExiste(String email){
-		return usuarioRepository.findByEmail(email);
+ 
 
+	public Usuario buscarPorEmail (String email) {
+		return usuarioRepository.findByEmail (email);
 	}
+	
+	
 
-	public void desativarUsuario(Long id) throws Exception {
+	public void desativarUsuario(UUID id) throws Exception {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		if (usuario.isEmpty())
 			throw new Exception("Usuario não encontrado!");
@@ -64,12 +78,18 @@ public class UsuarioService {
 			usuario.get().setStatus(false);
 	}
 	
-	public void ativarUsuario(Long id) throws Exception{
+	public void ativarUsuario(UUID id) throws Exception{
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		if (usuario.isEmpty())
 			throw new Exception("Usuario não encontrado!");
 		else
 			usuario.get().setStatus(true);
 	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return null;
+	}
+
 
 }

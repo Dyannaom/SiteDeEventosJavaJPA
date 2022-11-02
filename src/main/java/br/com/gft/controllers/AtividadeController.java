@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +20,14 @@ import br.com.gft.entities.Evento;
 import br.com.gft.services.AtividadeServices;
 
 @Controller
-@RequestMapping("atividade")
+@RequestMapping("/atividade")
 public class AtividadeController {
 
 	@Autowired
 	AtividadeServices atividadeServices;
 
-	@RequestMapping(method = RequestMethod.POST, path = "salvar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.POST, path = "/salvar")
 	public ModelAndView salvarAtividade(@Valid Atividade atividade, RedirectAttributes ra,
 			BindingResult bindingResult) {
 		ModelAndView mv;
@@ -45,7 +47,8 @@ public class AtividadeController {
 		return mv;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "deletar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/deletar")
 	public ModelAndView deletarAtividade(@RequestParam Long id, RedirectAttributes ra) {
 
 		ModelAndView mv = new ModelAndView("redirect:/atividade/listar");
@@ -61,7 +64,8 @@ public class AtividadeController {
 		return mv;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "get")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/get")
 	public ModelAndView getAtividade(@RequestParam Long id) {
 
 		ModelAndView mv = new ModelAndView("atividade/mostrar-atividade.html");
@@ -78,7 +82,8 @@ public class AtividadeController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "listar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/listar")
 	public ModelAndView listarAtividade() {
 
 		ModelAndView mv = new ModelAndView("atividade/list.html");

@@ -1,5 +1,7 @@
 package br.com.gft.controllers;
 
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class UsuarioController {
 	@Autowired
 	UsuarioService usuarioService;
 
+	
 	@RequestMapping
 	public ModelAndView loginUsuario() {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/usuario/form/login.html");
@@ -59,7 +62,7 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "editar")
-	public ModelAndView editarUsuario(@RequestParam(required = false) Long id) {
+	public ModelAndView editarUsuario(@RequestParam(required = false) UUID id) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/usuario/form/cadastro.html");
 
 		if (id == null) {
@@ -82,7 +85,7 @@ public class UsuarioController {
 				.verificarSeUsuarioComEssasQuatroLetrasJaExiste(usuario.getQuatroLetras()).isEmpty();
 		
 		boolean usuarioComEsseEmailJaExiste = usuarioService
-				.verificarSeUsuarioComEsseEmailJaExiste(usuario.getEmail()).isEmpty();
+				.verificarSeUsuarioComEssasQuatroLetrasJaExiste(usuario.getEmail()).isEmpty();
 
 		if (!bindingResult.hasErrors() && usuarioComEssasQuatroLetrasJaExiste && usuarioComEsseEmailJaExiste) {
 			usuario.setStatus(true);
@@ -108,7 +111,7 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "obter")
-	public ModelAndView pegarUsuario(@RequestParam Long id) {
+	public ModelAndView pegarUsuario(@RequestParam UUID id) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/usuario/perfil.html");
 		try {
 			mv.addObject("usuario", usuarioService.obterUsuario(id));
@@ -119,7 +122,7 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "deletar")
-	public ModelAndView deletarUsuario(@RequestParam Long id) {
+	public ModelAndView deletarUsuario(@RequestParam UUID id) {
 		ModelAndView mv = new ModelAndView();
 		try {
 			usuarioService.deletarUsuario(id);
@@ -130,7 +133,7 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "desativar")
-	public ModelAndView desativarUsuario(@RequestParam Long id) {
+	public ModelAndView desativarUsuario(@RequestParam UUID id) {
 		ModelAndView mv = new ModelAndView();
 		try {
 			usuarioService.desativarUsuario(id);
@@ -140,10 +143,5 @@ public class UsuarioController {
 		return mv;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "home")
-	public ModelAndView home() {
-		ModelAndView mv = new ModelAndView("area-acesso-adm/home.html");
-		return mv;
-	}
 
 }

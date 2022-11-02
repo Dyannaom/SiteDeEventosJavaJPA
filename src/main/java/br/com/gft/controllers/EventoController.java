@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import br.com.gft.services.EventoService;
 import br.com.gft.services.GrupoService;
 
 @Controller
-@RequestMapping("evento")
+@RequestMapping("/evento")
 public class EventoController {
 
 	@Autowired
@@ -34,6 +35,7 @@ public class EventoController {
 	@Autowired
 	private GrupoService grupoService;
 	
+
 	@RequestMapping
 	public ModelAndView listarEventos() {
 		
@@ -48,8 +50,8 @@ public class EventoController {
 		return mv;
 	}
 	
-	
-	@RequestMapping(method = RequestMethod.GET, path = "etapaUm")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/etapaUm")
 	public ModelAndView criarEvento(@RequestParam(required = false) Long id) {
 		
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-1/etapa-1.html");
@@ -57,7 +59,8 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, path = "salvar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.POST, path = "/salvar")
 	public ModelAndView salvarEvento(@Valid Evento evento, BindingResult bindingResult, RedirectAttributes ra) {
 
 		ModelAndView mv;
@@ -85,7 +88,8 @@ public class EventoController {
 		return mv;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "etapaDoisA")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/etapaDoisA")
 	public ModelAndView listarDiasDeEvento(@RequestParam Long id) {
 		
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-2/etapa-2-A.html");
@@ -105,7 +109,8 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "etapaDoisB")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/etapaDoisB")
 	public ModelAndView adicionarAtividades(@RequestParam Long idDia, Long idEvento) {
 		
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-2/etapa-2-B.html");
@@ -127,7 +132,8 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "etapaTresA")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/etapaTresA")
 	public ModelAndView adicionarGrupos(@RequestParam Long id) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-3/etapa-3-A.html");
 		try {
@@ -145,7 +151,8 @@ public class EventoController {
 		return mv;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "etapaTresB")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.GET, path = "/etapaTresB")
 	public ModelAndView adicionarParticipantesNoGrupos(@RequestParam Long idGrupo, Long idEvento) {
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-3/etapa-3-B.html");
 		
@@ -164,7 +171,9 @@ public class EventoController {
 		
 		return mv;
 	}
-	@RequestMapping(path = "editar")
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(path = "/editar")
 	public ModelAndView editarEvento(@RequestParam(required = false) Long id) {
 		
 		ModelAndView mv = new ModelAndView("area-acesso-adm/evento/criar-evento/etapa-1.html");
@@ -187,6 +196,7 @@ public class EventoController {
 	}
 
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/deletar")
 	public ModelAndView excluirEvento(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 
@@ -202,6 +212,7 @@ public class EventoController {
 		return mv;
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/detalharEvento")
 	public ModelAndView detalharEvento(@RequestParam Long id, RedirectAttributes ra) {
 		
@@ -216,6 +227,13 @@ public class EventoController {
 			ra.addFlashAttribute("cor", "danger");
 		}
 
+		return mv;
+	}
+	
+
+	@RequestMapping(method = RequestMethod.GET, path = "home")
+	public ModelAndView home() {
+		ModelAndView mv = new ModelAndView("area-acesso-adm/home.html");
 		return mv;
 	}
 	

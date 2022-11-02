@@ -27,9 +27,5 @@ public class RankingService {
 
 	}
 
-	public void mostrarGrupoVencedor(Ranking ranking) {
-		List<PontuacaoPorGrupo> listaDePontuacaoPorGrupo = ordemDaPontuacaoPorGrupo(ranking);
-		
-	}
 
 }

@@ -3,6 +3,7 @@ package br.com.gft.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,8 @@ import br.com.gft.services.GrupoService;
 import br.com.gft.services.ParticipanteEventoService;
 
 @Controller
-@RequestMapping("participante")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
+@RequestMapping("/participante")
 public class ParticipanteEventoController {
 
 	@Autowired
@@ -27,7 +29,8 @@ public class ParticipanteEventoController {
 	@Autowired
 	GrupoService grupoService;
 
-	@RequestMapping(method = RequestMethod.POST, path = "salvar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(method = RequestMethod.POST, path = "/salvar")
 	public ModelAndView salvarParticipante(@Valid ParticipanteEvento participanteEvento, BindingResult bindingResult,
 			RedirectAttributes ra) {
 		ModelAndView mv;
@@ -47,7 +50,8 @@ public class ParticipanteEventoController {
 		return mv;
 	}
 
-	@RequestMapping("desativar")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping("/desativar")
 	public ModelAndView desativarParticipante(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 
 		ModelAndView mv = new ModelAndView("redirect:/participante");
@@ -62,10 +66,11 @@ public class ParticipanteEventoController {
 		return mv;
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping
 	public ModelAndView listarParticipantesPorNomeOuPorQuatroLetras(String quatroLetras, String nome) {
 
-		ModelAndView mv = new ModelAndView("participante/list.html");
+		ModelAndView mv = new ModelAndView("/participante/list.html");
 
 		mv.addObject("lista", participanteService.listarParticipantesPorQuatroLetrasOuNome(quatroLetras, nome));
 
