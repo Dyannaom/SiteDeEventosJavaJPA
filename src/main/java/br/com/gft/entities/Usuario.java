@@ -3,6 +3,7 @@ package br.com.gft.entities;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ public class Usuario implements UserDetails, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private UUID id;
 	
 	@NotEmpty(message = "Nome não pode ser vazio")
 	private String nome;
@@ -93,6 +94,14 @@ public class Usuario implements UserDetails, Serializable {
 	
 	
 	
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return nome;
